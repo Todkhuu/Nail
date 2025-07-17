@@ -8,7 +8,7 @@ export function About() {
           <div className="relative">
             <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl">
               <Image
-                src="https://res.cloudinary.com/ds6kxgjh0/image/upload/v1745890177/__5_zxgjhx.jpg"
+                src="https://res.cloudinary.com/ds6kxgjh0/image/upload/v1752784647/IMG_6347_s1quqs.png"
                 alt="Elena Rose - Nail Artist"
                 width={500}
                 height={500}

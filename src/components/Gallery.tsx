@@ -2,76 +2,18 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
-
-const categories = [
-  { id: "all", label: "Бүх ажил" },
-  { id: "french", label: "Френч" },
-  { id: "gel", label: "Гель" },
-  { id: "art", label: "Nail Урлаг" },
-  { id: "seasonal", label: "Улирлын" },
-  { id: "bridal", label: "Bridal" },
-];
-
-const galleryItems = [
-  {
-    id: 1,
-    category: "french",
-    image:
-      "https://res.cloudinary.com/ds6kxgjh0/image/upload/v1741923889/h0hsrvkhkge69no20sck.webp",
-    title: "Сонгодог Френч Хумс",
-    description: "Цагаан үзүүртэй, ямар ч үед тохиромжтой nude суурь",
-  },
-  {
-    id: 5,
-    category: "gel",
-    image:
-      "https://res.cloudinary.com/ds6kxgjh0/image/upload/v1741923695/sbxpdq00totbd92oshrc.webp",
-    title: "Nude Гель Лак",
-    description: "Өдөр тутмын хэрэгцээнд тохирсон байгалийн өнгө",
-  },
-  {
-    id: 9,
-    category: "art",
-    image:
-      "https://res.cloudinary.com/ds6kxgjh0/image/upload/v1741923540/lwbpduwbxll4crbhepp4.webp",
-    title: "Hand-Painted Florals",
-    description: "Романтик уур амьсгалтай нарийн хийцтэй цэцгэн зураг",
-  },
-  {
-    id: 15,
-    category: "seasonal",
-    image:
-      "https://res.cloudinary.com/ds6kxgjh0/image/upload/v1741924122/nxfeh5dzqn4u8ggz3fz7.avif",
-    title: "Winter Wonderland",
-    description: "Цасан ширхэг, сэрүүн өнгө бүхий баярын загварууд",
-  },
-  {
-    id: 17,
-    category: "bridal",
-    image:
-      "https://res.cloudinary.com/ds6kxgjh0/image/upload/v1741924022/roulnisicgpuipeiw7x1.avif",
-    title: "Bridal Elegance",
-    description: "Нарийн гялалзсан эффект ба сувдтай хуримын хийц",
-  },
-];
+import { useService } from "@/app/_context/ServiceContext";
 
 export function Gallery() {
   const [activeCategory, setActiveCategory] = useState("all");
-  const [lightboxImage, setLightboxImage] = useState<
-    (typeof galleryItems)[0] | null
-  >(null);
+  const { services } = useService();
 
   const filteredItems =
     activeCategory === "all"
-      ? galleryItems
-      : galleryItems.filter((item) => item.category === activeCategory);
+      ? services
+      : services?.filter((item) => item.category.name === activeCategory);
 
-  const featuredItems = [
-    galleryItems.find((item) => item.category === "french") || galleryItems[0],
-    galleryItems.find((item) => item.category === "art") || galleryItems[1],
-    galleryItems.find((item) => item.category === "gel") || galleryItems[2],
-  ];
+  const featuredItems = [services?.find((item) => item.feature === true)];
 
   return (
     <section
@@ -100,15 +42,14 @@ export function Gallery() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            {featuredItems.map((item) => (
+            {featuredItems.map((item, index) => (
               <div
-                key={`featured-${item.id}`}
+                key={index}
                 className="group relative aspect-[4/5] overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 cursor-pointer"
-                onClick={() => setLightboxImage(item)}
               >
                 <Image
-                  src={item.image || "/placeholder.svg"}
-                  alt={item.title}
+                  src={item?.image || "/placeholder.svg"}
+                  alt={"item?.title"}
                   width={400}
                   height={500}
                   className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
@@ -118,9 +59,11 @@ export function Gallery() {
                   <div className="bg-rose-500 text-xs px-2 py-1 rounded-full inline-block mb-2">
                     ОНЦЛОХ
                   </div>
-                  <h4 className="font-semibold text-lg mb-1">{item.title}</h4>
+                  <h4 className="font-semibold text-lg mb-1">{item?.title}</h4>
                   <p className="text-sm opacity-90 capitalize">
-                    {item.category}
+                    {typeof item?.category === "string"
+                      ? item.category
+                      : item?.category?.name}
                   </p>
                 </div>
               </div>
@@ -130,29 +73,41 @@ export function Gallery() {
 
         {/* Category Tabs */}
         <div className="flex flex-wrap justify-center gap-2 mb-12">
-          {categories.map((category) => (
+          <Button
+            variant={activeCategory === "all" ? "default" : "outline"}
+            onClick={() => setActiveCategory("all")}
+            className={`rounded-full px-6 py-2 transition-all duration-300 ${
+              activeCategory === "all"
+                ? "bg-rose-500 hover:bg-rose-600 text-white"
+                : "border-rose-200 text-rose-600 hover:bg-rose-50"
+            }`}
+          >
+            Бүх ажил
+          </Button>
+          {services?.map((service, index) => (
             <Button
-              key={category.id}
-              variant={activeCategory === category.id ? "default" : "outline"}
-              onClick={() => setActiveCategory(category.id)}
+              key={index}
+              variant={
+                activeCategory === service.category.name ? "default" : "outline"
+              }
+              onClick={() => setActiveCategory(service.category.name)}
               className={`rounded-full px-6 py-2 transition-all duration-300 ${
-                activeCategory === category.id
+                activeCategory === service.category.name
                   ? "bg-rose-500 hover:bg-rose-600 text-white"
                   : "border-rose-200 text-rose-600 hover:bg-rose-50"
               }`}
             >
-              {category.label}
+              {service.category.name}
             </Button>
           ))}
         </div>
 
         {/* Gallery Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredItems.map((item) => (
+          {filteredItems?.map((item, index) => (
             <div
-              key={item.id}
+              key={index}
               className="group relative aspect-square overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 cursor-pointer"
-              onClick={() => setLightboxImage(item)}
             >
               <Image
                 src={item.image || "/placeholder.svg"}
@@ -165,47 +120,12 @@ export function Gallery() {
               <div className="absolute bottom-4 left-4 right-4 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
                 <h3 className="font-semibold text-lg mb-1">{item.title}</h3>
                 <p className="text-sm opacity-90 capitalize bg-white/20 backdrop-blur-sm px-2 py-1 rounded-full inline-block">
-                  {item.category}
+                  {item.category.name}
                 </p>
               </div>
             </div>
           ))}
         </div>
-        {/* Lightbox */}
-        {lightboxImage && (
-          <div
-            className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
-            onClick={() => setLightboxImage(null)}
-          >
-            <div className="relative max-w-4xl max-h-full">
-              <button
-                onClick={() => setLightboxImage(null)}
-                className="absolute -top-12 right-0 text-white hover:text-rose-300 transition-colors"
-              >
-                <X className="h-8 w-8" />
-              </button>
-              <Image
-                src={lightboxImage.image || "/placeholder.svg"}
-                alt={lightboxImage.title}
-                width={800}
-                height={800}
-                className="object-contain max-h-[80vh] rounded-lg"
-                onClick={(e) => e.stopPropagation()}
-              />
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 text-white rounded-b-lg">
-                <h3 className="text-xl font-semibold mb-2">
-                  {lightboxImage.title}
-                </h3>
-                <p className="text-sm opacity-90 mb-2">
-                  {lightboxImage.description}
-                </p>
-                <span className="text-xs bg-rose-500 px-2 py-1 rounded-full capitalize">
-                  {lightboxImage.category}
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </section>
   );

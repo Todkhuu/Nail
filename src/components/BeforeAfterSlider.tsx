@@ -13,7 +13,7 @@ const beforeAfterData = [
     before:
       "https://res.cloudinary.com/ds6kxgjh0/image/upload/v1745402705/Download_Single_continuous_line_drawing_like_a_princess__Side_view_photo_of_young_relaxed_woman_washing_hair_in_hair_salon._Hair_style_beauty_concept_1_ia8vye.jpg",
     after:
-      "https://res.cloudinary.com/ds6kxgjh0/image/upload/v1745402827/Download_Single_continuous_line_drawing_attractive_classy_dressed_barber_shop_hairdresser_is_turning_client_head_to_present_his_work_for_him__Hairdo_looks_trendy_and_so_perfect_mnvnft.jpg",
+      "https://res.cloudinary.com/ds6kxgjh0/image/upload/v1752784658/BF027514-7FF0-4183-9090-1213D7C829DE_d23apg.jpg",
     description:
       "Гел суурьтай классик Франц маникюр — удаан тогтоцтой, дэгжин загвар",
     category: "Франц Маникюр",

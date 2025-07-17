@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, User, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function Navigation() {
@@ -37,7 +37,7 @@ export function Navigation() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8">
+          <div className="hidden md:flex space-x-8 items-center">
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -47,6 +47,11 @@ export function Navigation() {
                 {item.label}
               </Link>
             ))}
+            <Link href="/admin">
+              <Button variant="ghost">
+                <User />
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile menu button */}

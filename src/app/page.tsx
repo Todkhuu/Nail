@@ -1,9 +1,11 @@
-import { About } from "@/components/About";
-import { BeforeAfterSlider } from "@/components/BeforeAfterSlider";
-import { Contact } from "@/components/Contact";
-import { Gallery } from "@/components/Gallery";
-import { Hero } from "@/components/Hero";
-import { Navigation } from "@/components/Navigation";
+import {
+  About,
+  BeforeAfterSlider,
+  Contact,
+  Gallery,
+  Hero,
+  Navigation,
+} from "@/components";
 
 export default function Home() {
   return (

@@ -12,11 +12,13 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { LogOut, Home, Save } from "lucide-react";
 import Link from "next/link";
-import { HeroEditor } from "@/components/admin/HeroEditor";
-import { AboutEditor } from "@/components/admin/AboutEditor";
-import { GalleryManager } from "@/components/admin/GalleryManager";
-import { ContactEditor } from "@/components/admin/ContactEditor";
-import { BeforeAfterEditor } from "@/components/admin/BeforeAfterEditor";
+import {
+  AboutEditor,
+  BeforeAfterEditor,
+  ContactEditor,
+  GalleryManager,
+  HeroEditor,
+} from "@/components/admin";
 
 type ActiveSection = "hero" | "about" | "before-after" | "gallery" | "contact";
 

@@ -49,3 +49,76 @@ export async function GET() {
     );
   }
 }
+
+export async function PUT(req: NextRequest) {
+  try {
+    await connectMongoDb();
+    const service = await req.json();
+
+    if (!service._id) {
+      return NextResponse.json(
+        { success: false, message: "ID шаардлагатай." },
+        { status: 400 }
+      );
+    }
+
+    const updatedJob = await ServiceModel.findByIdAndUpdate(
+      service._id,
+      { ...service },
+      { new: true }
+    );
+
+    if (!updatedJob) {
+      return NextResponse.json(
+        { success: false, message: "Үйлчилгээ олдсонгүй." },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      data: updatedJob,
+      message: "Үйлчилгээг амжилттай шинэчиллээ.",
+    });
+  } catch (error) {
+    console.error("Үйлчилгээ шинэчлэхэд алдаа гарлаа:", error);
+    return NextResponse.json(
+      { success: false, message: "Үйлчилгээг шинэчлэхэд алдаа гарлаа." },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  try {
+    await connectMongoDb();
+    const { id } = await req.json();
+
+    if (!id) {
+      return NextResponse.json(
+        { success: false, message: "ID is required" },
+        { status: 400 }
+      );
+    }
+
+    const deletedJob = await ServiceModel.findByIdAndDelete(id);
+
+    if (!deletedJob) {
+      return NextResponse.json(
+        { success: false, message: "Job not found" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: "Job deleted successfully",
+    });
+  } catch (error) {
+    console.error("Job deletion error:", error);
+    return NextResponse.json(
+      { success: false, message: "Error deleting job" },
+      { status: 500 }
+    );
+  }
+}

@@ -1,7 +1,5 @@
 "use client";
-
 import type React from "react";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -57,57 +55,6 @@ export function GalleryManager({ onContentChange }: GalleryManagerProps) {
       description:
         "Delicate floral designs painted by hand for a romantic touch",
       featured: true,
-    },
-    {
-      id: 3,
-      title: "Nude Gel Polish",
-      category: "gel",
-      image: "/images/nails/gel-nude.jpg",
-      description:
-        "Natural nude gel for a polished, professional everyday look",
-      featured: true,
-    },
-    {
-      id: 4,
-      title: "Modern French Twist",
-      category: "french",
-      image: "/images/nails/french-modern.jpg",
-      description:
-        "Contemporary take on French manicure with subtle color variations",
-      featured: false,
-    },
-    {
-      id: 5,
-      title: "Geometric Patterns",
-      category: "art",
-      image: "/images/nails/art-geometric.jpg",
-      description: "Modern geometric designs with clean lines and bold shapes",
-      featured: false,
-    },
-    {
-      id: 6,
-      title: "Soft Pink Gel",
-      category: "gel",
-      image: "/images/nails/gel-pink.jpg",
-      description:
-        "Delicate pink gel manicure with long-lasting shine and durability",
-      featured: false,
-    },
-    {
-      id: 7,
-      title: "Bridal Elegance",
-      category: "bridal",
-      image: "/images/nails/bridal-elegant.jpg",
-      description: "Sophisticated bridal nails with subtle shimmer and pearls",
-      featured: false,
-    },
-    {
-      id: 8,
-      title: "Winter Wonderland",
-      category: "seasonal",
-      image: "/images/nails/seasonal-winter.jpg",
-      description: "Festive winter designs with snowflakes and cool tones",
-      featured: false,
     },
   ]);
 

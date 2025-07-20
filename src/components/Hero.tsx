@@ -11,7 +11,7 @@ export function Hero() {
       <div
         className="absolute inset-0 bg-center bg-no-repeat bg-cover"
         style={{
-          backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), url('https://res.cloudinary.com/ds6kxgjh0/image/upload/v1745403534/Continuous_one_line_drawing_hand_use_serum_dropper_cosmetic_products_anti-aging_for_facial_and_skin_care__Skin_care_concept_mbgjd1.jpg')`,
+          backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), url('')`,
         }}
       />
       <div className="absolute inset-0 bg-gradient-to-br from-rose-100/80 via-pink-100/70 to-purple-100/80" />

@@ -104,18 +104,6 @@ export function GalleryManager({ onContentChange }: GalleryManagerProps) {
     onContentChange();
   };
 
-  const handleEdit = (design: Design) => {
-    setCurrentDesign(design);
-    setFormData({
-      title: design.title,
-      category: design.category,
-      description: design.description,
-      image: design.image,
-      featured: design.featured,
-    });
-    setIsEditing(true);
-  };
-
   const handleEditService = (service: ServiceType) => {
     setFormData({
       title: service.title,

@@ -22,6 +22,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Edit, Trash2, Upload, Save, X } from "lucide-react";
 import Image from "next/image";
+import { useService } from "@/app/_context/ServiceContext";
+import { useCategory } from "@/app/_context/CategoryContext";
+import { ServiceType } from "@/server/utils";
 
 interface Design {
   id: number;
@@ -57,6 +60,9 @@ export function GalleryManager({ onContentChange }: GalleryManagerProps) {
       featured: true,
     },
   ]);
+
+  const { services } = useService();
+  const { categoriess } = useCategory();
 
   const [isEditing, setIsEditing] = useState(false);
   const [currentDesign, setCurrentDesign] = useState<Design | null>(null);
@@ -106,6 +112,17 @@ export function GalleryManager({ onContentChange }: GalleryManagerProps) {
       description: design.description,
       image: design.image,
       featured: design.featured,
+    });
+    setIsEditing(true);
+  };
+
+  const handleEditService = (service: ServiceType) => {
+    setFormData({
+      title: service.title,
+      category: service.category._id.toString(),
+      description: service.description,
+      image: service.image,
+      featured: service.feature,
     });
     setIsEditing(true);
   };
@@ -329,20 +346,20 @@ export function GalleryManager({ onContentChange }: GalleryManagerProps) {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {designs.map((design) => (
+                {services?.map((service, index) => (
                   <div
-                    key={design.id}
+                    key={index}
                     className="border border-rose-100 rounded-lg p-4 hover:shadow-md transition-shadow"
                   >
                     <div className="aspect-square mb-3 overflow-hidden rounded-lg relative">
                       <Image
-                        src={design.image || "/placeholder.svg"}
-                        alt={design.title}
+                        src={service.image || "/placeholder.svg"}
+                        alt={service.title}
                         width={200}
                         height={200}
                         className="object-cover w-full h-full"
                       />
-                      {design.featured && (
+                      {service?.feature == true && (
                         <div className="absolute top-2 left-2">
                           <Badge className="bg-rose-500 text-white text-xs">
                             FEATURED
@@ -354,37 +371,37 @@ export function GalleryManager({ onContentChange }: GalleryManagerProps) {
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
                         <h3 className="font-medium text-gray-800">
-                          {design.title}
+                          {service.title}
                         </h3>
                         <Badge variant="secondary" className="text-xs">
                           {
-                            categories.find(
-                              (cat) => cat.value === design.category
-                            )?.label
+                            categoriess?.find(
+                              (cat) => cat._id === service.category._id
+                            )?.name
                           }
                         </Badge>
                       </div>
 
                       <p className="text-sm text-gray-600 line-clamp-2">
-                        {design.description}
+                        {service.description}
                       </p>
 
                       <div className="flex gap-2 pt-2">
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={() => handleEdit(design)}
+                          onClick={() => handleEditService(service)}
                           className="flex-1 border-blue-200 text-blue-600 hover:bg-blue-50"
                         >
                           <Edit className="mr-1 h-3 w-3" />
                           Edit
                         </Button>
-                        <Button
+                        {/* <Button
                           size="sm"
                           variant="outline"
                           onClick={() => toggleFeatured(design.id)}
                           className={`flex-1 ${
-                            design.featured
+                            design?.feature
                               ? "border-yellow-200 text-yellow-600 hover:bg-yellow-50"
                               : "border-gray-200 text-gray-600 hover:bg-gray-50"
                           }`}
@@ -398,7 +415,7 @@ export function GalleryManager({ onContentChange }: GalleryManagerProps) {
                           className="border-red-200 text-red-600 hover:bg-red-50"
                         >
                           <Trash2 className="h-3 w-3" />
-                        </Button>
+                        </Button> */}
                       </div>
                     </div>
                   </div>

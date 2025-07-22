@@ -20,11 +20,22 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Edit, Trash2, Upload, Save, X } from "lucide-react";
+import {
+  Plus,
+  Edit,
+  Trash2,
+  Upload,
+  Save,
+  X,
+  PlusCircle,
+  PlusCircleIcon,
+} from "lucide-react";
 import Image from "next/image";
 import { useService } from "@/app/_context/ServiceContext";
 import { useCategory } from "@/app/_context/CategoryContext";
 import { ServiceType } from "@/server/utils";
+import { AddDesign } from "./gallery/AddDesign";
+import { AddCategory } from "./gallery/AddCategory";
 
 interface Design {
   id: number;
@@ -151,13 +162,6 @@ export function GalleryManager({ onContentChange }: GalleryManagerProps) {
     onContentChange();
   };
 
-  const getCategoryStats = () => {
-    return categories.map((cat) => ({
-      ...cat,
-      count: designs.filter((design) => design.category === cat.value).length,
-    }));
-  };
-
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -166,27 +170,17 @@ export function GalleryManager({ onContentChange }: GalleryManagerProps) {
             Gallery Management
           </h1>
           <p className="text-gray-600 mt-2">
-            Manage your nail design portfolio ({designs.length} designs)
+            Manage your nail design portfolio ({categoriess?.length} designs)
           </p>
         </div>
       </div>
 
       {/* Category Statistics */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-        {getCategoryStats().map((cat) => (
-          <div
-            key={cat.value}
-            className="bg-white/60 backdrop-blur-sm rounded-lg p-4 text-center"
-          >
-            <div className="text-2xl font-bold text-rose-600">{cat.count}</div>
-            <div className="text-sm text-gray-600">{cat.label}</div>
-          </div>
-        ))}
-      </div>
+      <AddCategory categoriess={categoriess || []} services={services || []} />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Form Section */}
-        <div className="lg:col-span-1">
+        {/* <div className="lg:col-span-1">
           <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm sticky top-24">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -321,16 +315,14 @@ export function GalleryManager({ onContentChange }: GalleryManagerProps) {
               </form>
             </CardContent>
           </Card>
-        </div>
+        </div> */}
 
         {/* Designs Grid */}
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-3">
           <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
-            <CardHeader>
+            <CardHeader className="flex justify-between items-center">
               <CardTitle>Portfolio Designs</CardTitle>
-              <CardDescription>
-                Manage your nail design portfolio
-              </CardDescription>
+              <AddDesign />
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

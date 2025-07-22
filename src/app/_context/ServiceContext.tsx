@@ -2,7 +2,7 @@
 import React, { createContext, useEffect, useContext, useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
-import { ServiceType } from "@/server/utils";
+import { ServiceType } from "@/app/utils/types";
 
 type ServiceContextType = {
   services: ServiceType[] | null;

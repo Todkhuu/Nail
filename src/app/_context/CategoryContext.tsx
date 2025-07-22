@@ -2,7 +2,7 @@
 import React, { createContext, useEffect, useContext, useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
-import { CategoryType } from "@/server/utils";
+import { CategoryType } from "@/app/utils/types";
 
 type CategoryContextType = {
   categoriess: CategoryType[] | null;

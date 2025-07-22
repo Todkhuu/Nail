@@ -7,6 +7,7 @@ import { CategoryType } from "@/app/utils/types";
 type CategoryContextType = {
   categoriess: CategoryType[] | null;
   setCategories: React.Dispatch<React.SetStateAction<CategoryType[] | null>>;
+  getCategories: () => void;
 };
 
 export const CategoryContext = createContext<CategoryContextType>(
@@ -39,7 +40,9 @@ export const CategoryProvider = ({
   }, []);
 
   return (
-    <CategoryContext.Provider value={{ categoriess, setCategories }}>
+    <CategoryContext.Provider
+      value={{ categoriess, setCategories, getCategories }}
+    >
       {children}
     </CategoryContext.Provider>
   );

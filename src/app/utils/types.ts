@@ -10,4 +10,6 @@ export type ServiceType = {
   image: string;
   category: string | CategoryType;
   feature?: boolean;
+  price: string;
+  duration: string;
 };

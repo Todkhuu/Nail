@@ -9,6 +9,7 @@ import { useService } from "@/app/_context/ServiceContext";
 import { useCategory } from "@/app/_context/CategoryContext";
 import { AddDesign } from "./gallery/AddDesign";
 import { AddCategory } from "./gallery/AddCategory";
+import { EditDesign } from "./gallery/EditDesign";
 
 interface GalleryManagerProps {
   onContentChange: () => void;
@@ -30,13 +31,11 @@ export function GalleryManager({ onContentChange }: GalleryManagerProps) {
           </p>
         </div>
       </div>
-
       <AddCategory
         categoriess={categoriess || []}
         services={services || []}
         getCategories={getCategories}
       />
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-3">
           <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
@@ -67,7 +66,6 @@ export function GalleryManager({ onContentChange }: GalleryManagerProps) {
                         </div>
                       )}
                     </div>
-
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
                         <h3 className="font-medium text-gray-800">
@@ -91,14 +89,7 @@ export function GalleryManager({ onContentChange }: GalleryManagerProps) {
                       </p>
 
                       <div className="flex gap-2 pt-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="flex-1 border-blue-200 text-blue-600 hover:bg-blue-50"
-                        >
-                          <Edit className="mr-1 h-3 w-3" />
-                          Edit
-                        </Button>
+                        <EditDesign service={service} />
                         <Button
                           size="sm"
                           variant="outline"

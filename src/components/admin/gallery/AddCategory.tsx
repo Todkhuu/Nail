@@ -47,8 +47,13 @@ export const AddCategory = ({
   const getCategoryStats = () => {
     return categoriess?.map((cat) => ({
       ...cat,
-      count: services?.filter((service) => service.category._id === cat._id)
-        .length,
+      count: services?.filter((service) => {
+        const categoryId =
+          typeof service.category === "string"
+            ? service.category
+            : service.category._id;
+        return categoryId === cat._id;
+      }).length,
     }));
   };
 

@@ -4,13 +4,13 @@ import { ServiceType } from "../utils";
 const ServiceSchema: Schema = new Schema<ServiceType>(
   {
     title: { type: String, required: true },
-    price: { type: Number },
+    price: { type: String },
     category: {
       type: Schema.Types.ObjectId,
       ref: "Categories",
       required: true,
     },
-    duration: { type: Number, required: true },
+    duration: { type: String, required: true },
     description: { type: String, required: true },
     image: { type: String, required: true },
     feature: { type: Boolean, default: false },

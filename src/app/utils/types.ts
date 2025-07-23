@@ -4,10 +4,10 @@ export type CategoryType = {
 };
 
 export type ServiceType = {
-  _id: string;
+  _id?: string;
   title: string;
   description: string;
   image: string;
-  category: CategoryType;
-  feature: boolean;
+  category: string | CategoryType;
+  feature?: boolean;
 };

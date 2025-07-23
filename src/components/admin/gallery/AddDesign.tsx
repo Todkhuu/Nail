@@ -30,17 +30,37 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import CloudinaryUpload from "../CloudinaryUpload";
+import axios from "axios";
+import { useService } from "@/app/_context/ServiceContext";
+import { ServiceType } from "@/app/utils/types";
+import { toast } from "sonner";
 
 const formSchema = z.object({
-  title: z.string().min(2).max(50),
-  description: z.string().min(2).max(50),
-  image: z.string().min(2).max(50),
-  category: z.string().min(2).max(50),
-  featured: z.boolean(),
+  title: z
+    .string()
+    .min(2, { message: "Гарчиг хамгийн багадаа 2 тэмдэгт байх ёстой." })
+    .max(100, { message: "Гарчиг хамгийн ихдээ 100 тэмдэгт байх ёстой." }),
+  description: z
+    .string()
+    .min(2, { message: "Тайлбар хамгийн багадаа 2 тэмдэгт байх ёстой." })
+    .max(500, { message: "Тайлбар хамгийн ихдээ 500 тэмдэгт байх ёстой." }),
+  image: z.string(),
+  category: z.string().min(2, { message: "Категори сонгоно уу." }).max(50),
+  price: z
+    .string()
+    .min(1, { message: "Үнэ заавал оруулна." })
+    .max(10, { message: "Үнэ хамгийн ихдээ 10 оронтой байх ёстой." }),
+  duration: z
+    .string()
+    .min(1, { message: "Хугацаа заавал оруулна." })
+    .max(3, { message: "Хугацаа хамгийн ихдээ 3 оронтой байх ёстой." }),
 });
 
 export const AddDesign = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [file, setFile] = useState<File>();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,55 +68,111 @@ export const AddDesign = () => {
       description: "",
       image: "",
       category: "",
-      featured: false,
+      price: "",
+      duration: "",
     },
   });
   const { categoriess } = useCategory();
+  const { getService } = useService();
+
+  const addDesign = async (data: ServiceType) => {
+    try {
+      const imageUrl = await handleUpload();
+      console.log("image", imageUrl);
+      if (!imageUrl) return;
+      await axios.post("/api/services", {
+        ...data,
+        image: imageUrl,
+      });
+      form.reset();
+      setFile(undefined);
+      setIsOpen(false);
+      form.reset();
+      getService();
+    } catch (error) {
+      console.error("Үйлчилгээ үүсгэх үед алдаа гарлаа:", error);
+    }
+  };
+
+  const handleFile = (file: File) => {
+    setFile(file);
+  };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    addDesign(values);
   }
+
+  const handleUpload = async () => {
+    const PRESET_NAME = "food-delivery-app";
+    const CLOUDINARY_NAME = "ds6kxgjh0";
+    if (!file) {
+      toast("Зураг сонгоно уу.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", PRESET_NAME);
+    formData.append("api_key", CLOUDINARY_NAME);
+
+    try {
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUDINARY_NAME}/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const data = await res.json();
+      return data.secure_url;
+    } catch (err) {
+      console.error(err);
+      toast("Файл байршуулахад алдаа гарлаа.");
+    }
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger className="bg-rose-500 hover:bg-rose-600 text-sm text-white flex items-center gap-2 p-2 rounded-md">
         <Plus className="mr-2 h-4 w-4" />
-        Add Design
+        Дизайн нэмэх
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add Design</DialogTitle>
-          <DialogDescription>
-            Add a new design to your portfolio
-          </DialogDescription>
+          <DialogTitle className="mb-5">Дизайн нэмэх</DialogTitle>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Title</FormLabel>
-                    <FormControl>
-                      <Input placeholder="shadcn" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Category</FormLabel>
-                    <FormControl>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a category" />
+              <div className="flex justify-between flex-wrap gap-5">
+                <FormField
+                  control={form.control}
+                  name="title"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Гарчиг</FormLabel>
+                      <FormControl>
+                        <Input
+                          className="w-60"
+                          placeholder="Минимал загвар"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="category"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Категори</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <SelectTrigger className="w-46">
+                            <SelectValue placeholder="Категори сонгох" />
                           </SelectTrigger>
                           <SelectContent>
                             {categoriess?.map((category, index) => (
@@ -105,14 +181,72 @@ export const AddDesign = () => {
                               </SelectItem>
                             ))}
                           </SelectContent>
-                        </FormControl>
-                      </Select>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Тайлбар</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Загварын талаар тайлбар оруулах"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button type="submit">Submit</Button>
+              <FormField
+                control={form.control}
+                name="image"
+                render={() => (
+                  <FormItem>
+                    <FormLabel>Зураг</FormLabel>
+                    <FormControl>
+                      <CloudinaryUpload handleFile={handleFile} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex justify-between">
+                <FormField
+                  control={form.control}
+                  name="price"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Үнэ (₮)</FormLabel>
+                      <FormControl>
+                        <Input placeholder="30000" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="duration"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Хугацаа (минут)</FormLabel>
+                      <FormControl>
+                        <Input placeholder="60" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <Button type="submit">Илгээх</Button>
             </form>
           </Form>
         </DialogHeader>

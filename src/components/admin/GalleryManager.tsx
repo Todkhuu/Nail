@@ -76,7 +76,11 @@ export function GalleryManager({ onContentChange }: GalleryManagerProps) {
                         <Badge variant="secondary" className="text-xs">
                           {
                             categoriess?.find(
-                              (cat) => cat._id === service.category._id
+                              (cat) =>
+                                cat._id ===
+                                (typeof service.category === "string"
+                                  ? service.category
+                                  : service.category._id)
                             )?.name
                           }
                         </Badge>

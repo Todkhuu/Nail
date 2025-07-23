@@ -11,9 +11,9 @@ export interface CategoryType {
 export interface ServiceType {
   _id: Schema.Types.ObjectId;
   title: string;
-  price: number;
+  price: string;
   category: CategoryType;
-  duration: number;
+  duration: string;
   description: string;
   image: string;
   feature: boolean;

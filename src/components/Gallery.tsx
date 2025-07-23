@@ -11,9 +11,14 @@ export function Gallery() {
   const filteredItems =
     activeCategory === "all"
       ? services
-      : services?.filter((item) => item.category.name === activeCategory);
+      : services?.filter(
+          (item) =>
+            (typeof item.category === "string"
+              ? item.category
+              : item.category.name) === activeCategory
+        );
 
-  const featuredItems = [services?.find((item) => item.feature === true)];
+  const featuredItems = services?.filter((item) => item.feature === true) || [];
 
   return (
     <section
@@ -84,22 +89,28 @@ export function Gallery() {
           >
             Бүх ажил
           </Button>
-          {services?.map((service, index) => (
-            <Button
-              key={index}
-              variant={
-                activeCategory === service.category.name ? "default" : "outline"
-              }
-              onClick={() => setActiveCategory(service.category.name)}
-              className={`rounded-full px-6 py-2 transition-all duration-300 ${
-                activeCategory === service.category.name
-                  ? "bg-rose-500 hover:bg-rose-600 text-white"
-                  : "border-rose-200 text-rose-600 hover:bg-rose-50"
-              }`}
-            >
-              {service.category.name}
-            </Button>
-          ))}
+          {services?.map((service, index) => {
+            const categoryName =
+              typeof service.category === "string"
+                ? service.category
+                : service.category.name;
+            return (
+              <Button
+                key={index}
+                variant={
+                  activeCategory === categoryName ? "default" : "outline"
+                }
+                onClick={() => setActiveCategory(categoryName)}
+                className={`rounded-full px-6 py-2 transition-all duration-300 ${
+                  activeCategory === categoryName
+                    ? "bg-rose-500 hover:bg-rose-600 text-white"
+                    : "border-rose-200 text-rose-600 hover:bg-rose-50"
+                }`}
+              >
+                {categoryName}
+              </Button>
+            );
+          })}
         </div>
 
         {/* Gallery Grid */}
@@ -120,7 +131,9 @@ export function Gallery() {
               <div className="absolute bottom-4 left-4 right-4 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
                 <h3 className="font-semibold text-lg mb-1">{item.title}</h3>
                 <p className="text-sm opacity-90 capitalize bg-white/20 backdrop-blur-sm px-2 py-1 rounded-full inline-block">
-                  {item.category.name}
+                  {typeof item.category === "string"
+                    ? item.category
+                    : item.category.name}
                 </p>
               </div>
             </div>

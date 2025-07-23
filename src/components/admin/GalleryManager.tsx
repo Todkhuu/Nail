@@ -3,20 +3,21 @@ import type React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Edit, Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useService } from "@/app/_context/ServiceContext";
 import { useCategory } from "@/app/_context/CategoryContext";
 import { AddDesign } from "./gallery/AddDesign";
 import { AddCategory } from "./gallery/AddCategory";
 import { EditDesign } from "./gallery/EditDesign";
+import { EditFeature } from "./gallery/EditFeature";
 
 interface GalleryManagerProps {
   onContentChange: () => void;
 }
 
 export function GalleryManager({ onContentChange }: GalleryManagerProps) {
-  const { services } = useService();
+  const { services, getService } = useService();
   const { categoriess, getCategories } = useCategory();
 
   return (
@@ -90,17 +91,10 @@ export function GalleryManager({ onContentChange }: GalleryManagerProps) {
 
                       <div className="flex gap-2 pt-2">
                         <EditDesign service={service} />
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className={`flex-1 ${
-                            service?.feature
-                              ? "border-yellow-200 text-yellow-600 hover:bg-yellow-50"
-                              : "border-gray-200 text-gray-600 hover:bg-gray-50"
-                          }`}
-                        >
-                          {service?.feature ? "Unfeature" : "Feature"}
-                        </Button>
+                        <EditFeature
+                          service={service}
+                          getService={getService}
+                        />
                         <Button
                           size="sm"
                           className="border-red-200 text-red-600 hover:bg-red-50"

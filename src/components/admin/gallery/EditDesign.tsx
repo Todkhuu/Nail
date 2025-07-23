@@ -140,6 +140,19 @@ export const EditDesign = ({ service }: Props) => {
     }
   };
 
+  // Toggles the 'feature' property of the service
+  const editFeature = async (featureValue: boolean) => {
+    try {
+      await axios.put("/api/services", {
+        _id: service._id,
+        feature: featureValue,
+      });
+      getService();
+    } catch (error) {
+      console.error("Feature update error:", error);
+    }
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger>

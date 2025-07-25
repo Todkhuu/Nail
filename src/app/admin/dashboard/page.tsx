@@ -35,8 +35,8 @@ export default function AdminDashboard() {
     },
     {
       id: "about" as const,
-      label: "About Section",
-      description: "Profile photo, biography",
+      label: "Танилцуулга хэсэг",
+      description: "Профайл зураг, намтар",
     },
     {
       id: "before-after" as const,

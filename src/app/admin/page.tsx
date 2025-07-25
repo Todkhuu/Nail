@@ -48,7 +48,7 @@ export default function AdminLogin() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       await axios.post("/api/login", values);
-      toast.success("Login successful!");
+      toast.success("Амжилттай нэвтэрлээ!");
       router.push("/admin/dashboard");
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Login failed");

@@ -26,7 +26,8 @@ export interface StaffType {
   email: string;
   password: string;
   name: string;
-  experience: number;
+  experience: string;
+  happyClients: string;
   biography: string;
   description: string;
   image: string;

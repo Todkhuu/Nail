@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
       message: "Амжилттай нэвтэрлээ",
     });
   } catch (error) {
-    console.error("Login error:", error);
+    console.error("Нэвтрэхэд алдаа гарлааr:", error);
     return NextResponse.json(
       {
         message: "Нэвтрэхэд алдаа гарлаа",

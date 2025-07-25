@@ -18,9 +18,11 @@ export type StaffType = {
   _id?: string;
   email: string;
   name?: string;
-  experience?: number;
+  experience?: string;
+  happyClients: string;
   description: string;
   about?: string;
+  biography?: string;
   image?: string;
   bgImage?: string;
   profession?: string;

@@ -36,7 +36,6 @@ const formSchema = z.object({
 export function HeroEditor() {
   const [file, setFile] = useState<File>();
   const { staff, getStaff } = useStaff();
-  console.log("staff", staff);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -115,7 +114,6 @@ export function HeroEditor() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     updateStaff(values);
-    console.log(values);
   }
 
   return (

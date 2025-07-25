@@ -16,6 +16,7 @@ export interface ServiceType {
   duration: string;
   description: string;
   image: string;
+  beforeImage: string;
   feature: boolean;
   createdAt: Date;
   updatedAt: Date;

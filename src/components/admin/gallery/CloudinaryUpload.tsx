@@ -5,29 +5,30 @@ import { useEffect, useState } from "react";
 import { FileImage } from "lucide-react";
 
 type Props = {
-  onFileSelect: (_file: File) => void;
-  defaultImage?: string;
-  label?: string;
+  secondImage?: string;
+  handleFileSecond: (_file: File) => void;
 };
 
-const CloudinaryUpload = ({ onFileSelect, defaultImage, label }: Props) => {
-  const [image, setImage] = useState(defaultImage || "");
+const CloudinaryUploadSecond = ({ handleFileSecond, secondImage }: Props) => {
+  const [image, setImage] = useState(secondImage || "");
 
   useEffect(() => {
-    setImage(defaultImage || "");
-  }, [defaultImage]);
+    setImage(secondImage || "");
+  }, [secondImage]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
 
-    onFileSelect(file);
-    const url = URL.createObjectURL(file);
-    setImage(url);
+    const file = e.target.files[0];
+    if (file) {
+      handleFileSecond(file);
+      const imageUrl = URL.createObjectURL(file);
+      setImage(imageUrl);
+    }
   };
 
   return (
-    <label htmlFor={`upload-${label || "image"}`}>
+    <label htmlFor="file-input">
       {image ? (
         <div>
           <Image
@@ -47,12 +48,12 @@ const CloudinaryUpload = ({ onFileSelect, defaultImage, label }: Props) => {
         </div>
       )}
       <Input
-        id={`upload-${label || "image"}`}
-        onChange={handleChange}
+        id="file-input"
+        onChange={handleOnChange}
         type="file"
         className="w-[400px] hidden"
       />
     </label>
   );
 };
-export default CloudinaryUpload;
+export default CloudinaryUploadSecond;

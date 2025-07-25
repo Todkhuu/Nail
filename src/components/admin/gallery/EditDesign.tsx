@@ -46,6 +46,7 @@ const formSchema = z.object({
     .min(2, { message: "Тайлбар хамгийн багадаа 2 тэмдэгт байх ёстой." })
     .max(500, { message: "Тайлбар хамгийн ихдээ 500 тэмдэгт байх ёстой." }),
   image: z.string(),
+  beforeImage: z.string(),
   category: z.string().min(2, { message: "Категори сонгоно уу." }).max(50),
   price: z
     .string()
@@ -64,12 +65,15 @@ type Props = {
 export const EditDesign = ({ service }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [file, setFile] = useState<File>();
+  const [fileSecond, setFileSecond] = useState<File>();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: service.title,
       description: service.description,
       image: service.image,
+      beforeImage: service.beforeImage,
       category:
         typeof service.category === "string"
           ? service.category
@@ -83,44 +87,49 @@ export const EditDesign = ({ service }: Props) => {
 
   const updateDesign = async (data: z.infer<typeof formSchema>) => {
     try {
+      let imageUrlSecond = service.beforeImage;
       let imageUrl = service.image;
       if (file) {
-        const uploaded = await handleUpload();
+        const uploaded = await handleUploadGeneric(file);
         if (!uploaded) return;
         imageUrl = uploaded;
       }
+      if (fileSecond) {
+        const uploaded = await handleUploadGeneric(fileSecond);
+        if (!uploaded) return;
+        imageUrlSecond = uploaded;
+      }
+
       await axios.put("/api/services", {
         _id: service._id,
         ...data,
         image: imageUrl,
+        beforeImage: imageUrlSecond,
       });
       form.reset();
       setFile(undefined);
       setIsOpen(false);
       getService();
+      toast.success("Дизайн амжилттай зассан");
     } catch (error) {
       console.error("Үйлчилгээ шинэчлэхэд алдаа гарлаа:", error);
     }
-  };
-
-  const handleFile = (file: File) => {
-    setFile(file);
   };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     updateDesign(values);
   }
 
-  const handleUpload = async () => {
+  const handleUploadGeneric = async (uploadFile: File | undefined) => {
     const PRESET_NAME = "food-delivery-app";
     const CLOUDINARY_NAME = "ds6kxgjh0";
-    if (!file) {
+    if (!uploadFile) {
       toast("Зураг сонгоно уу.");
       return;
     }
 
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", uploadFile);
     formData.append("upload_preset", PRESET_NAME);
     formData.append("api_key", CLOUDINARY_NAME);
 
@@ -139,6 +148,8 @@ export const EditDesign = ({ service }: Props) => {
       toast("Файл байршуулахад алдаа гарлаа.");
     }
   };
+
+  const handleFile = (file: File) => setFile(file);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -218,14 +229,38 @@ export const EditDesign = ({ service }: Props) => {
               />
               <FormField
                 control={form.control}
+                name="beforeImage"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Өмнөх зураг</FormLabel>
+                    <FormControl>
+                      <CloudinaryUpload
+                        onFileSelect={(file) => {
+                          setFileSecond(file);
+                          field.onChange("");
+                          handleUploadGeneric(file).then((url) => {
+                            if (url) field.onChange(url);
+                          });
+                        }}
+                        defaultImage={service.beforeImage}
+                        label="beforeImage"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name="image"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Зураг</FormLabel>
                     <FormControl>
                       <CloudinaryUpload
-                        handleFile={handleFile}
+                        onFileSelect={handleFile}
                         defaultImage={service.image}
+                        label="afterImage"
                       />
                     </FormControl>
                     <FormMessage />

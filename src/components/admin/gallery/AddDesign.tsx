@@ -3,7 +3,6 @@ import { Plus } from "lucide-react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -89,6 +88,7 @@ export const AddDesign = () => {
       setIsOpen(false);
       form.reset();
       getService();
+      toast.success("Дизайн амжилттай нэмэгдлээ");
     } catch (error) {
       console.error("Үйлчилгээ үүсгэх үед алдаа гарлаа:", error);
     }
@@ -201,7 +201,6 @@ export const AddDesign = () => {
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -212,9 +211,8 @@ export const AddDesign = () => {
                   <FormItem>
                     <FormLabel>Зураг</FormLabel>
                     <FormControl>
-                      <CloudinaryUpload handleFile={handleFile} />
+                      <CloudinaryUpload onFileSelect={handleFile} />
                     </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />

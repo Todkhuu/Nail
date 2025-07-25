@@ -11,14 +11,13 @@ import {
 import { LogOut } from "lucide-react";
 import {
   AboutEditor,
-  BeforeAfterEditor,
   ContactEditor,
   GalleryManager,
   HeroEditor,
 } from "@/components/admin";
 import { AdminHeader } from "@/components/admin/Header";
 
-type ActiveSection = "hero" | "about" | "before-after" | "gallery" | "contact";
+type ActiveSection = "hero" | "about" | "gallery" | "contact";
 
 export default function AdminDashboard() {
   const [activeSection, setActiveSection] = useState<ActiveSection>("hero");
@@ -37,11 +36,6 @@ export default function AdminDashboard() {
       id: "about" as const,
       label: "Танилцуулга хэсэг",
       description: "Профайл зураг, намтар",
-    },
-    {
-      id: "before-after" as const,
-      label: "Before & After",
-      description: "Transformation showcase",
     },
     {
       id: "gallery" as const,
@@ -110,7 +104,6 @@ export default function AdminDashboard() {
           <div className="lg:col-span-3">
             {activeSection === "hero" && <HeroEditor />}
             {activeSection === "about" && <AboutEditor />}
-            {activeSection === "before-after" && <BeforeAfterEditor />}
             {activeSection === "gallery" && <GalleryManager />}
             {activeSection === "contact" && <ContactEditor />}
           </div>

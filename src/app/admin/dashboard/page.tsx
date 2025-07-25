@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,9 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { LogOut, Home, Save } from "lucide-react";
-import Link from "next/link";
+import { LogOut } from "lucide-react";
 import {
   AboutEditor,
   BeforeAfterEditor,
@@ -19,28 +16,22 @@ import {
   GalleryManager,
   HeroEditor,
 } from "@/components/admin";
+import { AdminHeader } from "@/components/admin/Header";
 
 type ActiveSection = "hero" | "about" | "before-after" | "gallery" | "contact";
 
 export default function AdminDashboard() {
   const [activeSection, setActiveSection] = useState<ActiveSection>("hero");
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   const handleLogout = () => {
     window.location.href = "/admin";
   };
 
-  const handleSaveAll = () => {
-    // In a real app, this would save all changes to a database
-    setHasUnsavedChanges(false);
-    alert("All changes saved successfully!");
-  };
-
   const sections = [
     {
       id: "hero" as const,
-      label: "Hero Section",
-      description: "Background, name, tagline",
+      label: "Гол хэсэг",
+      description: "Арын зураг, нэр, тайлбар",
     },
     {
       id: "about" as const,
@@ -54,8 +45,8 @@ export default function AdminDashboard() {
     },
     {
       id: "gallery" as const,
-      label: "Gallery",
-      description: "Manage nail designs",
+      label: "Галерей",
+      description: "Хумсны загварын жагсаалт",
     },
     {
       id: "contact" as const,
@@ -70,35 +61,8 @@ export default function AdminDashboard() {
       <header className="bg-white/80 backdrop-blur-sm border-b border-rose-100 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
+            <AdminHeader />
             <div className="flex items-center space-x-4">
-              <Link href="/" className="text-2xl font-bold text-rose-600">
-                Elena Rose
-              </Link>
-              <Badge variant="secondary" className="bg-rose-100 text-rose-700">
-                Content Management
-              </Badge>
-            </div>
-
-            <div className="flex items-center space-x-4">
-              {hasUnsavedChanges && (
-                <Button
-                  onClick={handleSaveAll}
-                  className="bg-green-500 hover:bg-green-600 text-white"
-                >
-                  <Save className="mr-2 h-4 w-4" />
-                  Save All Changes
-                </Button>
-              )}
-              <Link href="/">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="border-rose-200 text-rose-600 hover:bg-rose-50 bg-transparent"
-                >
-                  <Home className="mr-2 h-4 w-4" />
-                  View Site
-                </Button>
-              </Link>
               <Button
                 variant="outline"
                 size="sm"
@@ -112,15 +76,13 @@ export default function AdminDashboard() {
           </div>
         </div>
       </header>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Sidebar Navigation */}
           <div className="lg:col-span-1">
             <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm sticky top-24">
               <CardHeader>
-                <CardTitle className="text-lg">Content Sections</CardTitle>
-                <CardDescription>Manage your website content</CardDescription>
+                <CardTitle className="text-lg">Удирдлагын хэсгүүд</CardTitle>
+                <CardDescription>Вэбсайтaa удирдаарай</CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
                 {sections.map((section) => (
@@ -145,30 +107,12 @@ export default function AdminDashboard() {
               </CardContent>
             </Card>
           </div>
-
-          {/* Main Content Area */}
           <div className="lg:col-span-3">
-            {activeSection === "hero" && (
-              <HeroEditor onContentChange={() => setHasUnsavedChanges(true)} />
-            )}
-            {activeSection === "about" && (
-              <AboutEditor onContentChange={() => setHasUnsavedChanges(true)} />
-            )}
-            {activeSection === "before-after" && (
-              <BeforeAfterEditor
-                onContentChange={() => setHasUnsavedChanges(true)}
-              />
-            )}
-            {activeSection === "gallery" && (
-              <GalleryManager
-                onContentChange={() => setHasUnsavedChanges(true)}
-              />
-            )}
-            {activeSection === "contact" && (
-              <ContactEditor
-                onContentChange={() => setHasUnsavedChanges(true)}
-              />
-            )}
+            {activeSection === "hero" && <HeroEditor />}
+            {activeSection === "about" && <AboutEditor />}
+            {activeSection === "before-after" && <BeforeAfterEditor />}
+            {activeSection === "gallery" && <GalleryManager />}
+            {activeSection === "contact" && <ContactEditor />}
           </div>
         </div>
       </div>

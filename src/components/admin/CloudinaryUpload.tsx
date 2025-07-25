@@ -1,7 +1,7 @@
 "use client";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FileImage } from "lucide-react";
 
 type Props = {
@@ -11,6 +11,10 @@ type Props = {
 
 const CloudinaryUpload = ({ handleFile, defaultImage }: Props) => {
   const [image, setImage] = useState(defaultImage || "");
+
+  useEffect(() => {
+    setImage(defaultImage || "");
+  }, [defaultImage]);
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;

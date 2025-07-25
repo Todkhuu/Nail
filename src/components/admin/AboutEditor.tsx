@@ -16,18 +16,14 @@ import { Label } from "@/components/ui/label";
 import { Upload, Eye, Save } from "lucide-react";
 import Image from "next/image";
 
-interface AboutEditorProps {
-  onContentChange: () => void;
-}
-
-export function AboutEditor({ onContentChange }: AboutEditorProps) {
+export function AboutEditor() {
   const [aboutData, setAboutData] = useState({
     profileImage: "/placeholder.svg?height=500&width=500",
-    biography: `With over 8 years of experience in the nail industry, I've dedicated my career to perfecting the art of nail design. My passion lies in creating unique, personalized looks that reflect each client's individual style.
+    biography: `Мэргэжлийн 1 жилийн туршлагатайгаар би гарын хумсны урлагийг төгөлдөржүүлэхэд өөрийгөө бүрэн зориулсан. Миний хүсэл тэмүүлэл бол үйлчлүүлэгч бүрийн өвөрмөц хэв маягийг илэрхийлсэн онцгой, хувийн хумсны загваруудыг бүтээхэд оршдог.
 
-I specialize in French manicures, gel applications, and intricate nail art. Every design is crafted with meticulous attention to detail, using only the highest quality products to ensure long-lasting, beautiful results.
+Би Франц маникюр, гелэн хумс болон нарийн хийцтэй уран хумсны урлагт мэргэшсэн. Бүх загварыг өндөр нарийвчлал, чанартай бүтээгдэхүүн ашиглан уртасгаж, удаан хугацаанд гоёмсог хэвээр хадгалагдахаар урладаг.
 
-My studio provides a relaxing, luxurious environment where you can unwind while receiving professional nail care. I believe that beautiful nails are not just an accessory, but a form of self-expression.`,
+Миний студи нь та тухтай, тансаг орчинд амарч байхдаа мэргэжлийн хумсны арчилгааг авах боломжийг бүрдүүлдэг. Би үзэсгэлэнтэй хумс гэдэг нь зүгээр нэг чимэглэл биш, харин өөрийгөө илэрхийлэх гайхамшигт хэлбэр гэж үздэг.`,
     happyClients: "500+",
     yearsExperience: "8+",
   });
@@ -36,7 +32,6 @@ My studio provides a relaxing, luxurious environment where you can unwind while 
 
   const handleInputChange = (field: string, value: string) => {
     setAboutData((prev) => ({ ...prev, [field]: value }));
-    onContentChange();
   };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {

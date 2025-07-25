@@ -13,11 +13,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Eye, Save, Phone, Instagram, Clock, MapPin } from "lucide-react";
 
-interface ContactEditorProps {
-  onContentChange: () => void;
-}
-
-export function ContactEditor({ onContentChange }: ContactEditorProps) {
+export function ContactEditor() {
   const [contactData, setContactData] = useState({
     phone: "(555) 123-4567",
     instagram: "@elenarose_nails",
@@ -38,7 +34,6 @@ export function ContactEditor({ onContentChange }: ContactEditorProps) {
 
   const handleInputChange = (field: string, value: string) => {
     setContactData((prev) => ({ ...prev, [field]: value }));
-    onContentChange();
   };
 
   const handleHoursChange = (day: string, value: string) => {
@@ -46,7 +41,6 @@ export function ContactEditor({ onContentChange }: ContactEditorProps) {
       ...prev,
       hours: { ...prev.hours, [day]: value },
     }));
-    onContentChange();
   };
 
   const handleSave = () => {

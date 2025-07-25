@@ -20,7 +20,6 @@ export const CategoryProvider = ({
   children: React.ReactNode;
 }) => {
   const [categoriess, setCategories] = useState<CategoryType[] | null>(null);
-  console.log("cats", categoriess);
 
   const getCategories = async () => {
     try {

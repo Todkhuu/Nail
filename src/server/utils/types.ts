@@ -27,7 +27,8 @@ export interface StaffType {
   password: string;
   name: string;
   experience: number;
-  about: string;
+  biography: string;
+  description: string;
   image: string;
   bgImage: string;
   profession: string;
@@ -46,7 +47,7 @@ export interface StaffType {
       start: string;
       end: string;
     }[];
-  }[]; // ✅ зөв бүтэц
+  }[];
   phone: string;
   location: string;
   instagram: string;

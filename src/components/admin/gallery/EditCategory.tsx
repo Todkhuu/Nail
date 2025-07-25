@@ -1,9 +1,4 @@
 "use client";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import axios from "axios";
@@ -22,24 +17,25 @@ import {
 import { Input } from "@/components/ui/input";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { DeleteCategory } from "./DeleteCategory";
+import { CategoryType, ServiceType } from "@/app/utils/types";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Категорийн нэрийг заавал оруулна уу" }),
 });
 
-export const EditCategory = ({
-  getCategoryStats,
-  getCategories,
-}: {
-  getCategoryStats: () => {
-    _id: string;
-    name: string;
-    count: number;
-  }[];
+type Props = {
+  categories: CategoryType[];
+  services: ServiceType[];
   getCategories: () => void;
-}) => {
-  const [editId, setEditId] = useState<string | null>(null);
+};
+
+export const EditCategory = ({
+  categories,
+  services,
+  getCategories,
+}: Props) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [editingCategoryId, setEditingCategoryId] = useState<string>("");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -47,6 +43,19 @@ export const EditCategory = ({
       name: "",
     },
   });
+
+  const getCategoryStats = () => {
+    return categories?.map((cat) => ({
+      ...cat,
+      count: services?.filter((service) => {
+        const categoryId =
+          typeof service.category === "string"
+            ? service.category
+            : service.category._id;
+        return categoryId === cat._id;
+      }).length,
+    }));
+  };
 
   const editCategory = async (id: string, value: string) => {
     setIsOpen(false);
@@ -62,25 +71,20 @@ export const EditCategory = ({
     }
   };
 
-  const deleteCategory = async (id: string) => {
-    try {
-      await axios.delete(`/api/categories?id=${id}`);
-      toast.success("Категори амжилттай устгагдлаа");
-      getCategories();
-    } catch (error) {
-      toast.error("Категори устгахад алдаа гарлаа");
-    }
-  };
-
   function onSubmit(values: z.infer<typeof formSchema>) {
-    editCategory(editId || "", values.name);
+    editCategory(editingCategoryId, values.name);
   }
 
   return (
     <>
       {getCategoryStats()?.map((cat, index) => (
-        <Popover key={index}>
-          <PopoverTrigger onClick={() => setEditId(cat._id)}>
+        <Dialog open={isOpen} onOpenChange={setIsOpen} key={index}>
+          <DialogTrigger
+            onClick={() => {
+              setEditingCategoryId(cat._id);
+              form.setValue("name", cat.name);
+            }}
+          >
             <div
               key={cat._id}
               className="bg-white/60 backdrop-blur-sm rounded-lg p-2 border-0 flex hover:bg-white/90 gap-2 items-center"
@@ -88,39 +92,32 @@ export const EditCategory = ({
               <div className="text-sm text-gray-600">{cat.name}</div>
               <div className="text-xs font-bold text-rose-600">{cat.count}</div>
             </div>
-          </PopoverTrigger>
-          <PopoverContent className="flex flex-col w-26">
-            <Dialog open={isOpen} onOpenChange={setIsOpen}>
-              <DialogTrigger>
-                <div className="text-sm text-gray-600">Засварлах</div>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogTitle></DialogTitle>
-                <DialogHeader>Категорийн нэр солих</DialogHeader>
-                <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <FormField
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Категорийн нэр</FormLabel>
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                    <div className="flex justify-end mt-4">
-                      <Button type="submit">Засварлах</Button>
-                    </div>
-                  </form>
-                </Form>
-              </DialogContent>
-            </Dialog>
-            <DeleteCategory cat={cat} deleteCategory={deleteCategory} />
-          </PopoverContent>
-        </Popover>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogTitle></DialogTitle>
+            <DialogHeader>Категорийн нэр солих</DialogHeader>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Категорийн нэр</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <div className="flex justify-end mt-4 gap-2">
+                  <Button type="submit">Засварлах</Button>
+                  <DeleteCategory cat={cat} getCategories={getCategories} />
+                </div>
+              </form>
+            </Form>
+          </DialogContent>
+        </Dialog>
       ))}
     </>
   );

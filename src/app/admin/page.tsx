@@ -1,7 +1,5 @@
 "use client";
-
 import type React from "react";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,43 +10,54 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+
+const formSchema = z.object({
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters long." }),
+});
 
 export default function AdminLogin() {
   const [showPassword, setShowPassword] = useState(false);
-  const [credentials, setCredentials] = useState({
-    username: "",
-    password: "",
+  const router = useRouter();
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Simple demo login - in production, use proper authentication
-    if (
-      credentials.username === "admin" &&
-      credentials.password === "password"
-    ) {
-      window.location.href = "/admin/dashboard";
-    } else {
-      alert("Invalid credentials. Use admin/password for demo.");
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      await axios.post("/api/login", values);
+      toast.success("Login successful!");
+      router.push("/admin/dashboard");
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Login failed");
     }
-  };
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <Link
-            href="/"
-            className="text-3xl font-bold text-rose-600 hover:text-rose-700 transition-colors"
-          >
-            Elena Rose
-          </Link>
-          <p className="text-gray-600 mt-2">Admin Dashboard</p>
-        </div>
-
         <Card className="shadow-xl border-0 bg-white/80 backdrop-blur-sm">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-light text-gray-800">
@@ -57,81 +66,77 @@ export default function AdminLogin() {
             <CardDescription>Sign in to manage your portfolio</CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
-                <Input
-                  id="username"
-                  type="text"
-                  placeholder="Enter your username"
-                  value={credentials.username}
-                  onChange={(e) =>
-                    setCredentials({ ...credentials, username: e.target.value })
-                  }
-                  className="border-rose-200 focus:border-rose-400"
-                  required
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
+              >
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="Enter your email address"
+                          className="border-rose-200 focus:border-rose-400 pr-10"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            {...field}
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Enter your password"
+                            className="border-rose-200 focus:border-rose-400 pr-10"
+                          />
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                            onClick={() => setShowPassword(!showPassword)}
+                          >
+                            {showPassword ? (
+                              <EyeOff className="h-4 w-4 text-gray-400" />
+                            ) : (
+                              <Eye className="h-4 w-4 text-gray-400" />
+                            )}
+                          </Button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button
+                  type="submit"
+                  className="w-full bg-rose-500 hover:bg-rose-600 text-white py-2 rounded-lg transition-colors duration-200"
+                >
+                  Sign In
+                </Button>
+              </form>
+              <div className="mt-4 text-center">
+                <Link
+                  href="/"
+                  className="text-sm text-rose-600 hover:text-rose-700 transition-colors"
+                >
+                  ← Back to Website
+                </Link>
               </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
-                    value={credentials.password}
-                    onChange={(e) =>
-                      setCredentials({
-                        ...credentials,
-                        password: e.target.value,
-                      })
-                    }
-                    className="border-rose-200 focus:border-rose-400 pr-10"
-                    required
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4 text-gray-400" />
-                    ) : (
-                      <Eye className="h-4 w-4 text-gray-400" />
-                    )}
-                  </Button>
-                </div>
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full bg-rose-500 hover:bg-rose-600 text-white py-2 rounded-lg transition-colors duration-200"
-              >
-                Sign In
-              </Button>
-            </form>
-
-            <div className="mt-6 p-4 bg-rose-50 rounded-lg">
-              <p className="text-sm text-gray-600 text-center">
-                <strong>Demo Credentials:</strong>
-                <br />
-                Username: admin
-                <br />
-                Password: password
-              </p>
-            </div>
-
-            <div className="mt-4 text-center">
-              <Link
-                href="/"
-                className="text-sm text-rose-600 hover:text-rose-700 transition-colors"
-              >
-                ← Back to Website
-              </Link>
-            </div>
+            </Form>
           </CardContent>
         </Card>
       </div>

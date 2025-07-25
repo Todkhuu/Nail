@@ -44,19 +44,6 @@ export const AddCategory = ({
 }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const getCategoryStats = () => {
-    return categoriess?.map((cat) => ({
-      ...cat,
-      count: services?.filter((service) => {
-        const categoryId =
-          typeof service.category === "string"
-            ? service.category
-            : service.category._id;
-        return categoryId === cat._id;
-      }).length,
-    }));
-  };
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -79,7 +66,8 @@ export const AddCategory = ({
   return (
     <div className="flex items-center flex-wrap gap-4">
       <EditCategory
-        getCategoryStats={getCategoryStats}
+        categories={categoriess}
+        services={services}
         getCategories={getCategories}
       />
       <Dialog open={isOpen} onOpenChange={setIsOpen}>

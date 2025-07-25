@@ -4,6 +4,7 @@ import "./globals.css";
 import { CategoryProvider } from "./_context/CategoryContext";
 import { ServiceProvider } from "./_context/ServiceContext";
 import { Toaster } from "sonner";
+import { StaffProvider } from "./_context/StaffContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,8 +33,10 @@ export default function RootLayout({
       >
         <CategoryProvider>
           <ServiceProvider>
-            <Toaster />
-            {children}
+            <StaffProvider>
+              <Toaster />
+              {children}
+            </StaffProvider>
           </ServiceProvider>
         </CategoryProvider>
       </body>

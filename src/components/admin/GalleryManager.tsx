@@ -1,9 +1,8 @@
 "use client";
 import type React from "react";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus } from "lucide-react";
 import Image from "next/image";
 import { useService } from "@/app/_context/ServiceContext";
 import { useCategory } from "@/app/_context/CategoryContext";
@@ -11,27 +10,16 @@ import { AddDesign } from "./gallery/AddDesign";
 import { AddCategory } from "./gallery/AddCategory";
 import { EditDesign } from "./gallery/EditDesign";
 import { EditFeature } from "./gallery/EditFeature";
+import { DeleteDesign } from "./gallery/DeleteDesign";
+import { GalleryHeader } from "./gallery/Header";
 
-interface GalleryManagerProps {
-  onContentChange: () => void;
-}
-
-export function GalleryManager({ onContentChange }: GalleryManagerProps) {
+export function GalleryManager() {
   const { services, getService } = useService();
   const { categoriess, getCategories } = useCategory();
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-light text-gray-800">
-            Галерей удирдлага
-          </h1>
-          <p className="text-gray-600 mt-2">
-            Хумсны загварын галерей удирдах ({categoriess?.length} загвар)
-          </p>
-        </div>
-      </div>
+      <GalleryHeader categories={categoriess || []} />
       <AddCategory
         categoriess={categoriess || []}
         services={services || []}
@@ -95,18 +83,12 @@ export function GalleryManager({ onContentChange }: GalleryManagerProps) {
                           service={service}
                           getService={getService}
                         />
-                        <Button
-                          size="sm"
-                          className="border-red-200 text-red-600 hover:bg-red-50"
-                        >
-                          <Trash2 className="h-3 w-3" />
-                        </Button>
+                        <DeleteDesign service={service} />
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
-
               {services?.length === 0 && (
                 <div className="text-center py-12 text-gray-500">
                   <Plus className="mx-auto h-12 w-12 text-gray-300 mb-4" />

@@ -36,11 +36,7 @@ interface BeforeAfter {
   technique: string;
 }
 
-interface BeforeAfterEditorProps {
-  onContentChange: () => void;
-}
-
-export function BeforeAfterEditor({ onContentChange }: BeforeAfterEditorProps) {
+export function BeforeAfterEditor() {
   const [transformations, setTransformations] = useState<BeforeAfter[]>([
     {
       id: 1,
@@ -117,7 +113,6 @@ export function BeforeAfterEditor({ onContentChange }: BeforeAfterEditorProps) {
     }
 
     resetForm();
-    onContentChange();
   };
 
   const handleEdit = (transformation: BeforeAfter) => {
@@ -137,7 +132,6 @@ export function BeforeAfterEditor({ onContentChange }: BeforeAfterEditorProps) {
   const handleDelete = (id: number) => {
     if (confirm("Are you sure you want to delete this transformation?")) {
       setTransformations(transformations.filter((item) => item.id !== id));
-      onContentChange();
     }
   };
 

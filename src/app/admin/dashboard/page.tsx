@@ -44,8 +44,8 @@ export default function AdminDashboard() {
     },
     {
       id: "contact" as const,
-      label: "Contact Info",
-      description: "Phone, Instagram, hours",
+      label: "Холбоо барих",
+      description: "Утас, Инстаграм, ажиллах цаг",
     },
   ];
 
@@ -64,7 +64,7 @@ export default function AdminDashboard() {
                 className="border-gray-200 text-gray-600 hover:bg-gray-50 bg-transparent"
               >
                 <LogOut className="mr-2 h-4 w-4" />
-                Logout
+                Гарах
               </Button>
             </div>
           </div>

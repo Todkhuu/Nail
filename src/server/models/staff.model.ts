@@ -37,6 +37,7 @@ const StaffSchema: Schema = new Schema<StaffType>(
     ],
     phone: { type: String },
     location: { type: String },
+    igHandle: { type: String },
     instagram: { type: String },
   },
   { timestamps: true }

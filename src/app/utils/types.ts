@@ -41,6 +41,7 @@ export type StaffType = {
   phone?: string;
   location?: string;
   instagram?: string;
+  igHandle?: string;
   createdAt?: Date;
   updatedAt?: Date;
 };

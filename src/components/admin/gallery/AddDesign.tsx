@@ -137,117 +137,119 @@ export const AddDesign = () => {
         <Plus className="mr-2 h-4 w-4" />
         Дизайн нэмэх
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-h-screen overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="mb-5">Дизайн нэмэх</DialogTitle>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <div className="flex justify-between flex-wrap gap-5">
-                <FormField
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Гарчиг</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="w-60"
-                          placeholder="Минимал загвар"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="category"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Категори</FormLabel>
-                      <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <SelectTrigger className="w-46">
-                            <SelectValue placeholder="Категори сонгох" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {categoriess?.map((category, index) => (
-                              <SelectItem key={index} value={category._id}>
-                                {category.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
+        </DialogHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
               <FormField
                 control={form.control}
-                name="description"
+                name="title"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Тайлбар</FormLabel>
+                  <FormItem className="flex-1">
+                    <FormLabel>Гарчиг</FormLabel>
                     <FormControl>
-                      <Textarea
-                        placeholder="Загварын талаар тайлбар оруулах"
+                      <Input
+                        className="w-full sm:w-60"
+                        placeholder="Минимал загвар"
                         {...field}
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
               <FormField
                 control={form.control}
-                name="image"
-                render={() => (
-                  <FormItem>
-                    <FormLabel>Зураг</FormLabel>
+                name="category"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel>Категори</FormLabel>
                     <FormControl>
-                      <CloudinaryUpload onFileSelect={handleFile} />
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger className="w-full sm:w-46">
+                          <SelectValue placeholder="Категори сонгох" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {categoriess?.map((category, index) => (
+                            <SelectItem key={index} value={category._id}>
+                              {category.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
-              <div className="flex justify-between">
-                <FormField
-                  control={form.control}
-                  name="price"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Үнэ (₮)</FormLabel>
-                      <FormControl>
-                        <Input placeholder="30000" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="duration"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Хугацаа (минут)</FormLabel>
-                      <FormControl>
-                        <Input placeholder="60" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <Button type="submit">Илгээх</Button>
-            </form>
-          </Form>
-        </DialogHeader>
+            </div>
+
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Тайлбар</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Загварын талаар тайлбар оруулах"
+                      {...field}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="image"
+              render={() => (
+                <FormItem>
+                  <FormLabel>Зураг</FormLabel>
+                  <FormControl>
+                    <CloudinaryUpload onFileSelect={handleFile} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel>Үнэ (₮)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="30000" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="duration"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Хугацаа (минут)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="60" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <Button type="submit">Илгээх</Button>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

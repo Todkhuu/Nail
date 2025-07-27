@@ -7,11 +7,13 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useService } from "@/app/_context/ServiceContext";
 import { CategoryType } from "@/app/utils/types";
+import { useStaff } from "@/app/_context/StaffContext";
 
 export function BeforeAfterSlider() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [sliderPosition, setSliderPosition] = useState(50);
   const { services } = useService();
+  const { staff } = useStaff();
 
   const filteredServices = services?.filter(
     (item) => item.beforeImage && item.image
@@ -221,7 +223,7 @@ export function BeforeAfterSlider() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button className="bg-rose-500 hover:bg-rose-600 text-white px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105">
-              <Link href="tel:+976-9549-7021">Цаг захиалах</Link>
+              <Link href={`tel:${staff?.phone}`}>Цаг захиалах</Link>
             </Button>
           </div>
         </div>

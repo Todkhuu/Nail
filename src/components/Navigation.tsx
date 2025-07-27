@@ -79,6 +79,11 @@ export function Navigation() {
                   {item.label}
                 </Link>
               ))}
+              <Link href="/admin">
+                <Button variant="ghost">
+                  <User />
+                </Button>
+              </Link>
             </div>
           </div>
         )}

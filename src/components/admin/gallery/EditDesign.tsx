@@ -46,7 +46,7 @@ const formSchema = z.object({
     .min(2, { message: "Тайлбар хамгийн багадаа 2 тэмдэгт байх ёстой." })
     .max(500, { message: "Тайлбар хамгийн ихдээ 500 тэмдэгт байх ёстой." }),
   image: z.string(),
-  beforeImage: z.string(),
+  beforeImage: z.string().url().optional().nullable(),
   category: z.string().min(2, { message: "Категори сонгоно уу." }).max(50),
   price: z
     .string()
@@ -237,7 +237,7 @@ export const EditDesign = ({ service }: Props) => {
                       <CloudinaryUpload
                         onFileSelect={(file) => {
                           setFileSecond(file);
-                          field.onChange("");
+                          field.onChange(null);
                           handleUploadGeneric(file).then((url) => {
                             if (url) field.onChange(url);
                           });
@@ -246,7 +246,6 @@ export const EditDesign = ({ service }: Props) => {
                         label="beforeImage"
                       />
                     </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />

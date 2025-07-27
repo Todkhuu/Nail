@@ -3,10 +3,17 @@ import { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useService } from "@/app/_context/ServiceContext";
+import { useCategory } from "@/app/_context/CategoryContext";
 
 export function Gallery() {
   const [activeCategory, setActiveCategory] = useState("all");
   const { services } = useService();
+  const { categoriess } = useCategory();
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  const handleToggle = (index: number) => {
+    setActiveIndex((prev) => (prev === index ? null : index));
+  };
 
   const filteredItems =
     activeCategory === "all"
@@ -47,32 +54,60 @@ export function Gallery() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            {featuredItems.map((item, index) => (
-              <div
-                key={index}
-                className="group relative aspect-[4/5] overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 cursor-pointer"
-              >
-                <Image
-                  src={item?.image || "/placeholder.svg"}
-                  alt={"item?.title"}
-                  width={400}
-                  height={500}
-                  className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                  <div className="bg-rose-500 text-xs px-2 py-1 rounded-full inline-block mb-2">
-                    ОНЦЛОХ
+            {featuredItems.map((item, index) => {
+              const isActive = activeIndex === index;
+              return (
+                <div
+                  key={index}
+                  onClick={() => handleToggle(index)}
+                  className="group relative aspect-[4/5] overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 cursor-pointer"
+                >
+                  <Image
+                    src={item?.image || "/placeholder.svg"}
+                    alt={item?.title || "service image"}
+                    width={400}
+                    height={500}
+                    className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                  />
+
+                  {/* Dark gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+
+                  {/* Bottom info */}
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <div className="bg-rose-500 text-xs px-2 py-1 rounded-full inline-block mb-2">
+                      ОНЦЛОХ
+                    </div>
+                    <h4 className="font-semibold text-lg mb-1">
+                      {item?.title}
+                    </h4>
+                    <p className="text-sm opacity-90 capitalize">
+                      {typeof item?.category === "string"
+                        ? item.category
+                        : item?.category?.name}
+                    </p>
                   </div>
-                  <h4 className="font-semibold text-lg mb-1">{item?.title}</h4>
-                  <p className="text-sm opacity-90 capitalize">
-                    {typeof item?.category === "string"
-                      ? item.category
-                      : item?.category?.name}
-                  </p>
+
+                  {/* Hover/Active overlay */}
+                  <div
+                    className={`absolute inset-0 bg-black/60 text-white transition-opacity duration-500 flex flex-col justify-end items-end text-center p-6 ${
+                      isActive
+                        ? "opacity-100"
+                        : "opacity-0 group-hover:opacity-100"
+                    }`}
+                  >
+                    <p className="text-sm">
+                      Хугацаа: <b>{item?.duration} мин</b>
+                    </p>
+                    {item?.price && (
+                      <p className="text-sm mt-2">
+                        Үнэ: <b>{item.price}₮</b>
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -89,25 +124,21 @@ export function Gallery() {
           >
             Бүх ажил
           </Button>
-          {services?.map((service, index) => {
-            const categoryName =
-              typeof service.category === "string"
-                ? service.category
-                : service.category.name;
+          {categoriess?.map((category, index) => {
             return (
               <Button
                 key={index}
                 variant={
-                  activeCategory === categoryName ? "default" : "outline"
+                  activeCategory === category.name ? "default" : "outline"
                 }
-                onClick={() => setActiveCategory(categoryName)}
+                onClick={() => setActiveCategory(category.name)}
                 className={`rounded-full px-6 py-2 transition-all duration-300 ${
-                  activeCategory === categoryName
+                  activeCategory === category.name
                     ? "bg-rose-500 hover:bg-rose-600 text-white"
                     : "border-rose-200 text-rose-600 hover:bg-rose-50"
                 }`}
               >
-                {categoryName}
+                {category.name}
               </Button>
             );
           })}
@@ -115,29 +146,49 @@ export function Gallery() {
 
         {/* Gallery Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredItems?.map((item, index) => (
-            <div
-              key={index}
-              className="group relative aspect-square overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 cursor-pointer"
-            >
-              <Image
-                src={item.image || "/placeholder.svg"}
-                alt={item.title}
-                width={400}
-                height={400}
-                className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="absolute bottom-4 left-4 right-4 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                <h3 className="font-semibold text-lg mb-1">{item.title}</h3>
-                <p className="text-sm opacity-90 capitalize bg-white/20 backdrop-blur-sm px-2 py-1 rounded-full inline-block">
-                  {typeof item.category === "string"
-                    ? item.category
-                    : item.category.name}
-                </p>
+          {filteredItems?.map((item, index) => {
+            const isActive = activeIndex === index;
+            return (
+              <div
+                onClick={() => handleToggle(index)}
+                key={index}
+                className="group relative aspect-square overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 cursor-pointer"
+              >
+                <Image
+                  src={item.image || "/placeholder.svg"}
+                  alt={item.title}
+                  width={400}
+                  height={400}
+                  className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div
+                  className={`absolute inset-0 bg-black/60 text-white transition-opacity duration-500 flex justify-between items-end p-4 ${
+                    isActive
+                      ? "opacity-100"
+                      : "opacity-0 group-hover:opacity-100"
+                  }`}
+                >
+                  <div>
+                    <h3 className="font-semibold text-[13px]">{item.title}</h3>
+                    <p className="text-[13px] opacity-90 capitalize bg-white/20 backdrop-blur-sm px-2 py-1 rounded-full inline-block">
+                      {typeof item.category === "string"
+                        ? item.category
+                        : item.category.name}
+                    </p>
+                  </div>
+                  <div className="mb-2 flex flex-col items-end">
+                    <p className="font-light text-[10px]">
+                      Хугацаа: {item.duration} мин
+                    </p>
+                    <p className="font-light text-[10px] ">
+                      Үнэ: {item.price} ₮
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

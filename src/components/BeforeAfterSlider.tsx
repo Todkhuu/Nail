@@ -5,57 +5,33 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-
-const beforeAfterData = [
-  {
-    id: 1,
-    title: "Франц Маникюр Өөрчлөлт",
-    before:
-      "https://res.cloudinary.com/ds6kxgjh0/image/upload/v1745402705/Download_Single_continuous_line_drawing_like_a_princess__Side_view_photo_of_young_relaxed_woman_washing_hair_in_hair_salon._Hair_style_beauty_concept_1_ia8vye.jpg",
-    after:
-      "https://res.cloudinary.com/ds6kxgjh0/image/upload/v1752784658/BF027514-7FF0-4183-9090-1213D7C829DE_d23apg.jpg",
-    description:
-      "Гел суурьтай классик Франц маникюр — удаан тогтоцтой, дэгжин загвар",
-    category: "Франц Маникюр",
-    duration: "45 минут",
-    technique: "Гел будаг, үзүүрийг нарийн тэгшлэх техник",
-  },
-  {
-    id: 2,
-    title: "Урлагийн Маникюр",
-    before:
-      "https://res.cloudinary.com/ds6kxgjh0/image/upload/v1745402940/Download_Single_continuous_line_drawing_confident_young_woman_is_looking_at_her_reflection__Glowing_beauty_with_new_hairstyle_at_salon._Hair_style_concept_afuzoo.jpg",
-    after:
-      "https://res.cloudinary.com/ds6kxgjh0/image/upload/v1741924022/roulnisicgpuipeiw7x1.avif",
-    description:
-      "Цэцгэн хийцтэй, гараар зурсан хумсны урлаг — нарийн хийц, гоёлын мэдрэмжтэй",
-    category: "Nail Art (Хумсны урлаг)",
-    duration: "90 минут",
-    technique: "Нарийн бийр, акрил будаг ашиглан гараар зурсан дизайн",
-  },
-];
+import { useService } from "@/app/_context/ServiceContext";
+import { CategoryType } from "@/app/utils/types";
 
 export function BeforeAfterSlider() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [sliderPosition, setSliderPosition] = useState(50);
-  const [isDragging, setIsDragging] = useState(false);
+  const { services } = useService();
+
+  const filteredServices = services?.filter(
+    (item) => item.beforeImage && item.image
+  );
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % beforeAfterData.length);
+    setCurrentIndex((prev) => (prev + 1) % filteredServices!.length);
     setSliderPosition(50);
   };
 
   const prevSlide = () => {
     setCurrentIndex(
-      (prev) => (prev - 1 + beforeAfterData.length) % beforeAfterData.length
+      (prev) => (prev - 1 + filteredServices!.length) % filteredServices!.length
     );
     setSliderPosition(50);
   };
 
-  const currentItem = beforeAfterData[currentIndex];
+  const currentItem = filteredServices?.[currentIndex];
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
     const rect = e.currentTarget.getBoundingClientRect();
     const updatePosition = (clientX: number) => {
       const newPosition = ((clientX - rect.left) / rect.width) * 100;
@@ -64,7 +40,6 @@ export function BeforeAfterSlider() {
 
     const handleMouseMove = (e: MouseEvent) => updatePosition(e.clientX);
     const handleMouseUp = () => {
-      setIsDragging(false);
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };
@@ -75,7 +50,6 @@ export function BeforeAfterSlider() {
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    setIsDragging(true);
     const rect = e.currentTarget.getBoundingClientRect();
     const updatePosition = (clientX: number) => {
       const newPosition = ((clientX - rect.left) / rect.width) * 100;
@@ -87,7 +61,6 @@ export function BeforeAfterSlider() {
       updatePosition(e.touches[0].clientX);
     };
     const handleTouchEnd = () => {
-      setIsDragging(false);
       document.removeEventListener("touchmove", handleTouchMove);
       document.removeEventListener("touchend", handleTouchEnd);
     };
@@ -121,8 +94,8 @@ export function BeforeAfterSlider() {
               {/* Before Image */}
               <div className="absolute inset-0">
                 <Image
-                  src={currentItem.before || "/placeholder.svg"}
-                  alt={`Before - ${currentItem.title}`}
+                  src={currentItem?.beforeImage || "/placeholder.svg"}
+                  alt={`Before - ${currentItem?.title}`}
                   width={800}
                   height={500}
                   className="w-full h-full object-cover"
@@ -136,31 +109,13 @@ export function BeforeAfterSlider() {
                 style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
               >
                 <Image
-                  src={currentItem.after || "/placeholder.svg"}
-                  alt={`After - ${currentItem.title}`}
+                  src={currentItem?.image || "/placeholder.svg"}
+                  alt={`After - ${currentItem?.title}`}
                   width={800}
                   height={500}
                   className="w-full h-full object-cover"
                   priority
                 />
-              </div>
-
-              {/* Slider Handle */}
-              <div
-                className={`absolute top-0 bottom-0 w-1 bg-white shadow-lg z-10 flex items-center justify-center transition-all duration-100 ${
-                  isDragging ? "cursor-grabbing" : "cursor-ew-resize"
-                }`}
-                style={{
-                  left: `${sliderPosition}%`,
-                  transform: "translateX(-50%)",
-                }}
-              >
-                <div className="w-10 h-10 bg-white rounded-full shadow-xl flex items-center justify-center border-2">
-                  <div className="flex space-x-0.5">
-                    <div className="w-0.5 h-4 bg-gray-400 rounded-full" />
-                    <div className="w-0.5 h-4 bg-gray-400 rounded-full" />
-                  </div>
-                </div>
               </div>
 
               {/* Before/After Labels */}
@@ -196,26 +151,18 @@ export function BeforeAfterSlider() {
                 <div>
                   <div className="flex items-center gap-2 mb-3">
                     <span className="bg-rose-100 text-rose-700 px-3 py-1 rounded-full text-sm font-medium">
-                      {currentItem.category}
+                      {(currentItem?.category as CategoryType)?.name}
                     </span>
                     <span className="text-gray-500 text-sm">
-                      • {currentItem.duration}
+                      • {currentItem?.duration} мин
                     </span>
                   </div>
                   <h3 className="text-2xl font-semibold text-gray-800 mb-3">
-                    {currentItem.title}
+                    {currentItem?.title}
                   </h3>
                   <p className="text-gray-600 mb-4 leading-relaxed">
-                    {currentItem.description}
+                    {currentItem?.description}
                   </p>
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-medium text-gray-800 mb-2">
-                      Ашигласан техник:
-                    </h4>
-                    <p className="text-sm text-gray-600">
-                      {currentItem.technique}
-                    </p>
-                  </div>
                 </div>
 
                 <div className="space-y-4">
@@ -244,7 +191,7 @@ export function BeforeAfterSlider() {
 
               {/* Dots Indicator */}
               <div className="flex justify-center space-x-3 mt-8">
-                {beforeAfterData.map((_, index) => (
+                {filteredServices?.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => {
@@ -275,12 +222,6 @@ export function BeforeAfterSlider() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button className="bg-rose-500 hover:bg-rose-600 text-white px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105">
               <Link href="tel:+976-9549-7021">Цаг захиалах</Link>
-            </Button>
-            <Button
-              variant="outline"
-              className="border-rose-300 text-rose-600 hover:bg-rose-50 px-8 py-3 rounded-full bg-transparent"
-            >
-              Бүтэн Галерейг Харах
             </Button>
           </div>
         </div>

@@ -7,7 +7,7 @@ export async function GET() {
     await connectMongoDb();
     const staff = await StaffModel.find();
     return NextResponse.json({ staff }, { status: 200 });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }
@@ -33,7 +33,7 @@ export async function PUT(req: NextRequest) {
     }
 
     return NextResponse.json({ putStaff }, { status: 200 });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }

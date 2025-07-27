@@ -253,7 +253,7 @@ export const EditDesign = ({ service }: Props) => {
               <FormField
                 control={form.control}
                 name="image"
-                render={({ field }) => (
+                render={() => (
                   <FormItem>
                     <FormLabel>Зураг</FormLabel>
                     <FormControl>

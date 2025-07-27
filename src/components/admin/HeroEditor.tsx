@@ -54,7 +54,7 @@ export function HeroEditor() {
         description: staff.description || "",
       });
     }
-  }, [staff]);
+  }, [staff, form]);
 
   const handleFile = (file: File) => {
     setFile(file);
@@ -148,7 +148,7 @@ export function HeroEditor() {
                       <FormLabel>Зураг</FormLabel>
                       <FormControl>
                         <CloudinaryUpload
-                          handleFile={handleFile}
+                          onFileSelect={handleFile}
                           defaultImage={field.value}
                         />
                       </FormControl>

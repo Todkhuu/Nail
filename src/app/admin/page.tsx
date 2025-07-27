@@ -23,7 +23,7 @@ import {
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -50,8 +50,12 @@ export default function AdminLogin() {
       await axios.post("/api/login", values);
       toast.success("Амжилттай нэвтэрлээ!");
       router.push("/admin/dashboard");
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message || "Login failed");
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data?.message || "Login failed");
+      } else {
+        toast.error("Login failed");
+      }
     }
   }
 

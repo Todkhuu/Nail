@@ -15,7 +15,7 @@ export const DeleteCategory = ({ cat, getCategories }: Props) => {
       await axios.delete(`/api/categories?id=${id}`);
       toast.success("Категори амжилттай устгагдлаа");
       getCategories();
-    } catch (error) {
+    } catch {
       toast.error("Категори устгахад алдаа гарлаа");
     }
   };

@@ -1,8 +1,24 @@
+"use client";
+import { useStaff } from "@/app/_context/StaffContext";
 import { Button } from "@/components/ui/button";
 import { Instagram, Phone, Clock, MapPin } from "lucide-react";
 import Link from "next/link";
 
 export function Contact() {
+  const { staff } = useStaff();
+
+  function convertDayToMongolian(day: string) {
+    const days: { [key: string]: string } = {
+      Monday: "Дав",
+      Tuesday: "Мяг",
+      Wednesday: "Лха",
+      Thursday: "Пүр",
+      Friday: "Ба",
+      Saturday: "Бям",
+      Sunday: "Ням",
+    };
+    return days[day] || day;
+  }
   return (
     <section id="contact" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -21,14 +37,14 @@ export function Contact() {
               <Instagram className="h-8 w-8 text-white" />
             </div>
             <h3 className="font-semibold text-gray-800 mb-2">Instagram</h3>
-            <p className="text-gray-600 mb-4">@_gegiinee_</p>
+            <p className="text-gray-600 mb-4">{staff?.igHandle}</p>
             <Button
               variant="outline"
               size="sm"
               className="border-rose-200 text-rose-600 hover:bg-rose-50 bg-transparent"
             >
               <Link
-                href=" https://www.instagram.com/_gegiinee_/"
+                href={`${staff?.instagram}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -43,13 +59,13 @@ export function Contact() {
               <Phone className="h-8 w-8 text-white" />
             </div>
             <h3 className="font-semibold text-gray-800 mb-2">Утас</h3>
-            <p className="text-gray-600 mb-4">(+976) 95497021</p>
+            <p className="text-gray-600 mb-4">{staff?.phone}</p>
             <Button
               variant="outline"
               size="sm"
               className="border-pink-200 text-pink-600 hover:bg-pink-50 bg-transparent"
             >
-              <Link href="tel:+976-9549-7021">Шууд залгах</Link>
+              <Link href={`tel:${staff?.phone}`}>Шууд залгах</Link>
             </Button>
           </div>
 
@@ -60,9 +76,29 @@ export function Contact() {
             </div>
             <h3 className="font-semibold text-gray-800 mb-2">Цагийн хуваарь</h3>
             <div className="text-gray-600 text-sm space-y-1">
-              <p>Даваа–Баасан: 09:00–19:00</p>
-              <p>Бямба: 09:00–17:00</p>
-              <p>Ням: Амарна</p>
+              {staff?.availableTimes?.map((dayObj, index) => {
+                const { day, slots } = dayObj;
+
+                // Хэрэв slots хоосон бол "Амарна" гэж харуулна
+                if (slots.length === 0) {
+                  return (
+                    <p key={index}>{convertDayToMongolian(day)}: Амарна</p>
+                  );
+                }
+
+                // Эс бөгөөс slots-оос эхний цагаар харуулна (нэг өдөрт олон slot байх магадлалтай бол loop хийж болно)
+                return (
+                  <p key={index}>
+                    {convertDayToMongolian(day)}:{" "}
+                    {slots.map((slot, i) => (
+                      <span key={i}>
+                        {slot.start}–{slot.end}
+                        {i !== slots.length - 1 && ", "}
+                      </span>
+                    ))}
+                  </p>
+                );
+              })}
             </div>
           </div>
 
@@ -72,11 +108,7 @@ export function Contact() {
               <MapPin className="h-8 w-8 text-white" />
             </div>
             <h3 className="font-semibold text-gray-800 mb-2">Хаяг</h3>
-            <p className="text-gray-600 mb-4 text-sm">
-              Морьтон, ХУД - 19-р хороо,
-              <br />
-              Улаанбаатар
-            </p>
+            <p className="text-gray-600 mb-4 text-sm">{staff?.location}</p>
             <Button
               variant="outline"
               size="sm"
@@ -108,7 +140,7 @@ export function Contact() {
             className="bg-rose-500 hover:bg-rose-600 text-white px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105"
           >
             <Phone className="mr-2 h-5 w-5" />
-            <Link href="tel:+976-9549-7021"> Цаг захиалах</Link>
+            <Link href={`tel:${staff?.phone}`}> Цаг захиалах</Link>
           </Button>
         </div>
       </div>

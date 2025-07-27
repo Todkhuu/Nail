@@ -1,8 +1,11 @@
+"use client";
+import { useStaff } from "@/app/_context/StaffContext";
 import { Button } from "@/components/ui/button";
 import { Instagram, Phone } from "lucide-react";
 import Link from "next/link";
 
 export function Hero() {
+  const { staff } = useStaff();
   return (
     <section
       id="home"
@@ -11,21 +14,19 @@ export function Hero() {
       <div
         className="absolute inset-0 bg-center bg-no-repeat bg-cover"
         style={{
-          backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), url('')`,
+          backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), url(${staff?.bgImage})`,
         }}
       />
       <div className="absolute inset-0 bg-gradient-to-br from-rose-100/80 via-pink-100/70 to-purple-100/80" />
       <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-5xl md:text-7xl font-light text-gray-800 mb-6 tracking-wide">
-          Гэрэлмаа
+          {staff?.name}
         </h1>
         <p className="text-xl md:text-2xl text-gray-600 mb-4 font-light">
           Маникюр артист
         </p>
         <p className="text-lg text-gray-500 mb-8 max-w-2xl mx-auto leading-relaxed">
-          Хамгийн нарийн хийцтэй, урлагийн мэдрэмжтэй маникюр бүтээлүүдийг урлаж
-          байна. Франц маникюр, гел түрхлэг болон захиалгат хийцтэй хумсны
-          урлалаар мэргэшсэн.
+          {staff?.description}
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

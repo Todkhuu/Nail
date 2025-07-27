@@ -62,7 +62,7 @@ export function AboutEditor() {
         experience: staff.experience || "",
       });
     }
-  }, [staff]);
+  }, [staff, form]);
 
   const handleFile = (file: File) => {
     setFile(file);

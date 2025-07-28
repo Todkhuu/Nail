@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import axios from "axios";
@@ -17,87 +18,98 @@ import {
 import { Input } from "@/components/ui/input";
 import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { DeleteCategory } from "./DeleteCategory";
-import { CategoryType, ServiceType } from "@/app/utils/types";
+import { Textarea } from "@/components/ui/textarea";
+import { useCategory } from "@/app/_context/CategoryContext";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Категорийн нэрийг заавал оруулна уу" }),
+  description: z
+    .string()
+    .min(1, { message: "Категорийн тайлбарыг заавал оруулна уу" }),
 });
 
 type Props = {
-  categories: CategoryType[];
-  services: ServiceType[];
   getCategories: () => void;
 };
 
-export const EditCategory = ({
-  categories,
-  services,
-  getCategories,
-}: Props) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [editingCategoryId, setEditingCategoryId] = useState<string>("");
+export const EditCategory = ({ getCategories }: Props) => {
+  const [openDialogId, setOpenDialogId] = useState<string | null>(null);
+  const { categories } = useCategory();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      description: "",
     },
   });
 
-  const getCategoryStats = () => {
-    return categories?.map((cat) => ({
-      ...cat,
-      count: services?.filter((service) => {
-        const categoryId =
-          typeof service.category === "string"
-            ? service.category
-            : service.category._id;
-        return categoryId === cat._id;
-      }).length,
-    }));
-  };
-
-  const editCategory = async (id: string, value: string) => {
-    setIsOpen(false);
+  const editCategory = async (id: string, value: string, valueDes: string) => {
+    setOpenDialogId(null);
     try {
       await axios.put(`/api/categories?id=${id}`, {
         name: value,
+        description: valueDes,
       });
       toast.success("Категори амжилттай шинэчлэгдлээ");
       getCategories();
     } catch (error) {
       toast.error("Категори шинэчлэхэд алдаа гарлаа");
-      console.log(error);
+      console.error(error);
     }
   };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    editCategory(editingCategoryId, values.name);
+    console.log("des", values);
+    if (openDialogId) {
+      editCategory(openDialogId, values.name, values.description);
+    }
   }
+
+  const handleDialogOpen = (
+    categoryId: string,
+    categoryName: string,
+    categoryDes: string
+  ) => {
+    setOpenDialogId(categoryId);
+    form.setValue("name", categoryName);
+    form.setValue("description", categoryDes);
+  };
+
+  const handleDialogClose = () => {
+    setOpenDialogId(null);
+    form.reset();
+  };
 
   return (
     <>
-      {getCategoryStats()?.map((cat, index) => (
-        <Dialog open={isOpen} onOpenChange={setIsOpen} key={index}>
-          <DialogTrigger
-            onClick={() => {
-              setEditingCategoryId(cat._id);
-              form.setValue("name", cat.name);
-            }}
-          >
-            <div
-              key={cat._id}
-              className="bg-white/60 backdrop-blur-sm rounded-lg p-2 border-0 flex hover:bg-white/90 gap-2 items-center"
-            >
+      {categories?.map((cat) => (
+        <Dialog
+          key={cat._id}
+          open={openDialogId === cat._id}
+          onOpenChange={(open) => {
+            if (open) {
+              handleDialogOpen(cat._id!, cat.name, cat.description!);
+            } else {
+              handleDialogClose();
+            }
+          }}
+        >
+          <DialogTrigger asChild>
+            <div className="bg-white/60 backdrop-blur-sm rounded-lg p-2 border-0 flex hover:bg-white/90 gap-2 items-center cursor-pointer">
               <div className="text-sm text-gray-600">{cat.name}</div>
               <div className="text-xs font-bold text-rose-600">{cat.count}</div>
             </div>
           </DialogTrigger>
           <DialogContent>
-            <DialogTitle></DialogTitle>
-            <DialogHeader>Категорийн нэр солих</DialogHeader>
+            <DialogHeader>
+              <DialogTitle>Категорийн нэр солих</DialogTitle>
+            </DialogHeader>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
+              >
                 <FormField
                   control={form.control}
                   name="name"
@@ -110,9 +122,26 @@ export const EditCategory = ({
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Категорийн тайлбар</FormLabel>
+                      <FormControl>
+                        <Textarea {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
                 <div className="flex justify-end mt-4 gap-2">
                   <Button type="submit">Засварлах</Button>
-                  <DeleteCategory cat={cat} getCategories={getCategories} />
+                  <DeleteCategory
+                    cat={cat}
+                    getCategories={() => {
+                      getCategories();
+                    }}
+                  />
                 </div>
               </form>
             </Form>

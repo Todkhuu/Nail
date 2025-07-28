@@ -20,7 +20,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCategory } from "@/app/_context/CategoryContext";
 import {
   Select,
@@ -51,11 +51,11 @@ const formSchema = z.object({
   price: z
     .string()
     .min(1, { message: "Үнэ заавал оруулна." })
-    .max(10, { message: "Үнэ хамгийн ихдээ 10 оронтой байх ёстой." }),
+    .max(1000, { message: "Үнэ хамгийн ихдээ 100 оронтой байх ёстой." }),
   duration: z
     .string()
     .min(1, { message: "Хугацаа заавал оруулна." })
-    .max(3, { message: "Хугацаа хамгийн ихдээ 3 оронтой байх ёстой." }),
+    .max(100, { message: "Хугацаа хамгийн ихдээ 100 оронтой байх ёстой." }),
 });
 
 type Props = {
@@ -82,7 +82,23 @@ export const EditDesign = ({ service }: Props) => {
       duration: service.duration,
     },
   });
-  const { categoriess } = useCategory();
+
+  useEffect(() => {
+    form.reset({
+      title: service.title,
+      description: service.description,
+      image: service.image,
+      beforeImage: service.beforeImage,
+      category:
+        typeof service.category === "string"
+          ? service.category
+          : service.category._id,
+      price: service.price,
+      duration: service.duration,
+    });
+  }, [service, form]);
+
+  const { categories } = useCategory();
   const { getService } = useService();
 
   const updateDesign = async (data: z.infer<typeof formSchema>) => {
@@ -109,7 +125,7 @@ export const EditDesign = ({ service }: Props) => {
       form.reset();
       setFile(undefined);
       setIsOpen(false);
-      getService();
+      await getService();
       toast.success("Дизайн амжилттай зассан");
     } catch (error) {
       console.error("Үйлчилгээ шинэчлэхэд алдаа гарлаа:", error);
@@ -197,8 +213,8 @@ export const EditDesign = ({ service }: Props) => {
                             <SelectValue placeholder="Категори сонгох" />
                           </SelectTrigger>
                           <SelectContent>
-                            {categoriess?.map((category, index) => (
-                              <SelectItem key={index} value={category._id}>
+                            {categories?.map((category, index) => (
+                              <SelectItem key={index} value={category._id!}>
                                 {category.name}
                               </SelectItem>
                             ))}

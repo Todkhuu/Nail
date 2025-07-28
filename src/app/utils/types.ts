@@ -1,6 +1,8 @@
 export type CategoryType = {
-  _id: string;
+  _id?: string;
   name: string;
+  description?: string;
+  count?: number;
 };
 
 export type ServiceType = {

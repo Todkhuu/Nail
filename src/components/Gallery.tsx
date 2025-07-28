@@ -8,7 +8,7 @@ import { useCategory } from "@/app/_context/CategoryContext";
 export function Gallery() {
   const [activeCategory, setActiveCategory] = useState("all");
   const { services } = useService();
-  const { categoriess } = useCategory();
+  const { categories } = useCategory();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const handleToggle = (index: number) => {
@@ -124,7 +124,7 @@ export function Gallery() {
           >
             Бүх ажил
           </Button>
-          {categoriess?.map((category, index) => {
+          {categories?.map((category, index) => {
             return (
               <Button
                 key={index}

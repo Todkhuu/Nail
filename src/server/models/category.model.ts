@@ -8,6 +8,7 @@ const CategorySchema: Schema = new Schema<CategoryType>(
       type: [Schema.Types.ObjectId],
       ref: "Services",
     },
+    description: { type: String, default: "" },
   },
   { timestamps: true }
 );

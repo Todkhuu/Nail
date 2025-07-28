@@ -1,5 +1,4 @@
 "use client";
-import { ServiceType } from "@/app/utils/types";
 import { CategoryType } from "@/app/utils/types";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,33 +25,30 @@ import axios from "axios";
 import { useState } from "react";
 import { toast } from "sonner";
 import { EditCategory } from "./EditCategory";
-
-type Props = {
-  categoriess: CategoryType[];
-  services: ServiceType[];
-  getCategories: () => void;
-};
+import { Textarea } from "@/components/ui/textarea";
+import { useCategory } from "@/app/_context/CategoryContext";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Категорийн нэрийг заавал оруулна уу" }),
+  description: z
+    .string()
+    .min(1, { message: "Категорийн тайлбарыг заавал оруулна уу" }),
 });
 
-export const AddCategory = ({
-  categoriess,
-  services,
-  getCategories,
-}: Props) => {
+export const AddCategory = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { getCategories } = useCategory();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      description: "",
     },
   });
 
-  const addCategory = async (value: string) => {
-    await axios.post("/api/categories", { name: value });
+  const addCategory = async (value: CategoryType) => {
+    await axios.post("/api/categories", value);
     getCategories();
     setIsOpen(false);
     form.reset();
@@ -60,16 +56,12 @@ export const AddCategory = ({
   };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    addCategory(values.name);
+    addCategory(values);
   }
 
   return (
     <div className="flex items-center flex-wrap gap-4">
-      <EditCategory
-        categories={categoriess}
-        services={services}
-        getCategories={getCategories}
-      />
+      <EditCategory getCategories={getCategories} />
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger>
           <PlusCircleIcon className="h-6 w-6 bg-rose-500 text-white rounded-full" />
@@ -89,6 +81,18 @@ export const AddCategory = ({
                     <FormLabel>Категорийн нэр</FormLabel>
                     <FormControl>
                       <Input {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Категорийн тайлбар</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} />
                     </FormControl>
                   </FormItem>
                 )}

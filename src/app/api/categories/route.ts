@@ -37,10 +37,11 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const { name } = await req.json();
+    const { name, description } = await req.json();
 
     const newCategory = await CategoryModel.create({
       name,
+      description,
     });
 
     return NextResponse.json(
@@ -93,9 +94,12 @@ export async function PUT(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
-    const { name } = await req.json();
+    const { name, description } = await req.json();
 
-    const category = await CategoryModel.findByIdAndUpdate(id, { name });
+    const category = await CategoryModel.findByIdAndUpdate(id, {
+      name,
+      description,
+    });
     return NextResponse.json(
       { message: "Ангилал амжилттай шинэчлэгдлээ.", category },
       { status: 200 }

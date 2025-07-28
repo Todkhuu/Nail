@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { CategoryType } from "@/app/utils/types";
 
 type CategoryContextType = {
-  categoriess: CategoryType[] | null;
+  categories: CategoryType[] | null;
   setCategories: React.Dispatch<React.SetStateAction<CategoryType[] | null>>;
   getCategories: () => void;
 };
@@ -19,13 +19,15 @@ export const CategoryProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [categoriess, setCategories] = useState<CategoryType[] | null>(null);
+  const [categories, setCategories] = useState<CategoryType[] | null>(null);
+
+  console.log("categoriess", categories);
 
   const getCategories = async () => {
     try {
       // setLoading(true);
-      const response = await axios.get("/api/categories");
-      setCategories(response.data.data);
+      const response = await axios.get("/api/categories/with-count");
+      setCategories(response.data);
     } catch (error: unknown) {
       toast.error(axios.isAxiosError(error).toString());
       console.log("error in context", error);
@@ -40,7 +42,7 @@ export const CategoryProvider = ({
 
   return (
     <CategoryContext.Provider
-      value={{ categoriess, setCategories, getCategories }}
+      value={{ categories, setCategories, getCategories }}
     >
       {children}
     </CategoryContext.Provider>

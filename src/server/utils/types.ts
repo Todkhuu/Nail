@@ -3,6 +3,7 @@ import { Schema } from "mongoose";
 export interface CategoryType {
   _id: Schema.Types.ObjectId;
   name: string;
+  description: string;
   services: ServiceType;
   createdAt: Date;
   updatedAt: Date;

@@ -15,16 +15,12 @@ import { GalleryHeader } from "./gallery/Header";
 
 export function GalleryManager() {
   const { services, getService } = useService();
-  const { categoriess, getCategories } = useCategory();
+  const { categories } = useCategory();
 
   return (
     <div className="space-y-6">
-      <GalleryHeader categories={categoriess || []} />
-      <AddCategory
-        categoriess={categoriess || []}
-        services={services || []}
-        getCategories={getCategories}
-      />
+      <GalleryHeader categories={categories || []} />
+      <AddCategory />
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-3">
           <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
@@ -34,9 +30,9 @@ export function GalleryManager() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {services?.map((service, index) => (
+                {services?.map((service) => (
                   <div
-                    key={index}
+                    key={service._id}
                     className="border border-rose-100 rounded-lg p-4 hover:shadow-md transition-shadow"
                   >
                     <div className="aspect-square mb-3 overflow-hidden rounded-lg relative">
@@ -62,7 +58,7 @@ export function GalleryManager() {
                         </h3>
                         <Badge variant="secondary" className="text-xs">
                           {
-                            categoriess?.find(
+                            categories?.find(
                               (cat) =>
                                 cat._id ===
                                 (typeof service.category === "string"

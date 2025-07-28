@@ -71,7 +71,7 @@ export const AddDesign = () => {
       duration: "",
     },
   });
-  const { categoriess } = useCategory();
+  const { categories } = useCategory();
   const { getService } = useService();
 
   const addDesign = async (data: ServiceType) => {
@@ -176,8 +176,8 @@ export const AddDesign = () => {
                           <SelectValue placeholder="Категори сонгох" />
                         </SelectTrigger>
                         <SelectContent>
-                          {categoriess?.map((category, index) => (
-                            <SelectItem key={index} value={category._id}>
+                          {categories?.map((category, index) => (
+                            <SelectItem key={index} value={category._id!}>
                               {category.name}
                             </SelectItem>
                           ))}

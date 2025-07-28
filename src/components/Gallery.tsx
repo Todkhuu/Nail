@@ -10,6 +10,10 @@ export function Gallery() {
   const { services } = useService();
   const { categories } = useCategory();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const currentCategory = categories?.find(
+    (cat) => cat._id === selectedCategory
+  );
 
   const handleToggle = (index: number) => {
     setActiveIndex((prev) => (prev === index ? null : index));
@@ -131,8 +135,11 @@ export function Gallery() {
                 variant={
                   activeCategory === category.name ? "default" : "outline"
                 }
-                onClick={() => setActiveCategory(category.name)}
-                className={`rounded-full px-6 py-2 transition-all duration-300 ${
+                onClick={() => {
+                  setActiveCategory(category.name);
+                  setSelectedCategory(category._id!);
+                }}
+                className={`rounded-full px-6 py-2 transition-all duration-300 mb-2 ${
                   activeCategory === category.name
                     ? "bg-rose-500 hover:bg-rose-600 text-white"
                     : "border-rose-200 text-rose-600 hover:bg-rose-50"
@@ -143,6 +150,14 @@ export function Gallery() {
             );
           })}
         </div>
+
+        {currentCategory && (
+          <div className="mb-4 p-4 text-center">
+            <p className="text-sm text-gray-600">
+              {currentCategory.description}
+            </p>
+          </div>
+        )}
 
         {/* Gallery Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

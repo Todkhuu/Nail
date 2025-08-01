@@ -72,9 +72,9 @@ export function Gallery() {
                   key={index}
                   onClick={() => handleToggle(index)}
                   className="group relative aspect-[4/5] overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 cursor-pointer"
-                  initial={{ opacity: 0, y: 10 }}
-                  // whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 1, delay: 1 }}
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
                 >
                   <Image
                     src={item?.image || "/placeholder.svg"}
@@ -183,9 +183,9 @@ export function Gallery() {
                 key={index}
                 onClick={() => handleToggle(index)}
                 className="group relative aspect-square overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 cursor-pointer"
-                initial={{ opacity: 0, y: 10 }}
-                // whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 1 }}
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
               >
                 <Image
                   src={item.image || "/placeholder.svg"}

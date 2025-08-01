@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useService } from "@/app/_context/ServiceContext";
 import { useCategory } from "@/app/_context/CategoryContext";
+import { motion } from "framer-motion";
 
 export function Gallery() {
   const [activeCategory, setActiveCategory] = useState("all");
@@ -37,14 +38,20 @@ export function Gallery() {
       className="py-20 bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+        <motion.div
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
           <h2 className="text-4xl font-light text-gray-800 mb-4">Миний Ажил</h2>
           <div className="w-20 h-1 bg-gradient-to-r from-rose-400 to-pink-400 rounded-full mx-auto mb-6" />
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Френч маникюраас эхлээд нарийн хийцтэй урлагийн бүтээлүүд хүртэл
             миний бүтээлүүдтэй танилцаарай
           </p>
-        </div>
+        </motion.div>
 
         {/* Featured Designs Section */}
         <div className="mb-16">
@@ -61,10 +68,14 @@ export function Gallery() {
             {featuredItems.map((item, index) => {
               const isActive = activeIndex === index;
               return (
-                <div
+                <motion.div
                   key={index}
                   onClick={() => handleToggle(index)}
                   className="group relative aspect-[4/5] overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 cursor-pointer"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.15 }}
+                  viewport={{ once: true }}
                 >
                   <Image
                     src={item?.image || "/placeholder.svg"}
@@ -109,14 +120,20 @@ export function Gallery() {
                       </p>
                     )}
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>
         </div>
 
         {/* Category Tabs */}
-        <div className="flex flex-wrap justify-center gap-2 mb-12">
+        <motion.div
+          className="flex flex-wrap justify-center gap-2 mb-12"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
           <Button
             variant={activeCategory === "all" ? "default" : "outline"}
             onClick={() => setActiveCategory("all")}
@@ -149,7 +166,7 @@ export function Gallery() {
               </Button>
             );
           })}
-        </div>
+        </motion.div>
 
         {currentCategory && (
           <div className="mb-4 p-4 text-center">
@@ -164,10 +181,14 @@ export function Gallery() {
           {filteredItems?.map((item, index) => {
             const isActive = activeIndex === index;
             return (
-              <div
-                onClick={() => handleToggle(index)}
+              <motion.div
                 key={index}
+                onClick={() => handleToggle(index)}
                 className="group relative aspect-square overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 cursor-pointer"
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, delay: index * 0.08 }}
+                viewport={{ once: true }}
               >
                 <Image
                   src={item.image || "/placeholder.svg"}
@@ -201,7 +222,7 @@ export function Gallery() {
                     </p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>

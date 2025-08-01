@@ -3,6 +3,7 @@ import { useStaff } from "@/app/_context/StaffContext";
 import { Button } from "@/components/ui/button";
 import { Instagram, Phone, Clock, MapPin } from "lucide-react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export function Contact() {
   const { staff } = useStaff();
@@ -20,7 +21,14 @@ export function Contact() {
     return days[day] || day;
   }
   return (
-    <section id="contact" className="py-20 bg-white">
+    <motion.section
+      id="contact"
+      className="py-20 bg-white"
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      viewport={{ once: true }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-light text-gray-800 mb-4">Холбогдох</h2>
@@ -32,7 +40,13 @@ export function Contact() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Instagram */}
-          <div className="text-center p-6 bg-gradient-to-br from-rose-50 to-pink-50 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="text-center p-6 bg-gradient-to-br from-rose-50 to-pink-50 rounded-2xl hover:shadow-lg transition-shadow duration-300"
+          >
             <div className="w-16 h-16 bg-gradient-to-br from-rose-400 to-pink-400 rounded-full flex items-center justify-center mx-auto mb-4">
               <Instagram className="h-8 w-8 text-white" />
             </div>
@@ -51,10 +65,16 @@ export function Contact() {
                 Instagram хуудсыг дагах
               </Link>
             </Button>
-          </div>
+          </motion.div>
 
           {/* Phone */}
-          <div className="text-center p-6 bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="text-center p-6 bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl hover:shadow-lg transition-shadow duration-300"
+          >
             <div className="w-16 h-16 bg-gradient-to-br from-pink-400 to-purple-400 rounded-full flex items-center justify-center mx-auto mb-4">
               <Phone className="h-8 w-8 text-white" />
             </div>
@@ -67,10 +87,16 @@ export function Contact() {
             >
               <Link href={`tel:${staff?.phone}`}>Шууд залгах</Link>
             </Button>
-          </div>
+          </motion.div>
 
           {/* Hours */}
-          <div className="text-center p-6 bg-gradient-to-br from-purple-50 to-rose-50 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="text-center p-6 bg-gradient-to-br from-purple-50 to-rose-50 rounded-2xl hover:shadow-lg transition-shadow duration-300"
+          >
             <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-rose-400 rounded-full flex items-center justify-center mx-auto mb-4">
               <Clock className="h-8 w-8 text-white" />
             </div>
@@ -100,10 +126,16 @@ export function Contact() {
                 );
               })}
             </div>
-          </div>
+          </motion.div>
 
           {/* Location */}
-          <div className="text-center p-6 bg-gradient-to-br from-rose-50 to-pink-50 rounded-2xl hover:shadow-lg transition-shadow duration-300">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="text-center p-6 bg-gradient-to-br from-rose-50 to-pink-50 rounded-2xl hover:shadow-lg transition-shadow duration-300"
+          >
             <div className="w-16 h-16 bg-gradient-to-br from-rose-400 to-pink-400 rounded-full flex items-center justify-center mx-auto mb-4">
               <MapPin className="h-8 w-8 text-white" />
             </div>
@@ -124,11 +156,17 @@ export function Contact() {
                 Газрын зураг харах
               </Link>
             </Button>
-          </div>
+          </motion.div>
         </div>
 
         {/* CTA Section */}
-        <div className="text-center mt-16 p-8 bg-gradient-to-r from-rose-100 to-pink-100 rounded-3xl">
+        <motion.div
+          className="text-center mt-16 p-8 bg-gradient-to-r from-rose-100 to-pink-100 rounded-3xl"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
           <h3 className="text-2xl font-light text-gray-800 mb-4">
             Цаг авахыг хүсэж байна уу?
           </h3>
@@ -142,8 +180,8 @@ export function Contact() {
             <Phone className="mr-2 h-5 w-5" />
             <Link href={`tel:${staff?.phone}`}> Цаг захиалах</Link>
           </Button>
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }

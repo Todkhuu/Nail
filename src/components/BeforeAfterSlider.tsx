@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useService } from "@/app/_context/ServiceContext";
 import { CategoryType } from "@/app/utils/types";
 import { useStaff } from "@/app/_context/StaffContext";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function BeforeAfterSlider() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -73,9 +74,18 @@ export function BeforeAfterSlider() {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-br from-purple-50 via-rose-50 to-pink-50">
+    <section
+      id="before"
+      className="py-20 bg-gradient-to-br from-purple-50 via-rose-50 to-pink-50"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+        <motion.div
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          viewport={{ once: true }}
+        >
           <h2 className="text-4xl font-light text-gray-800 mb-4">
             Өмнө & Дараа
           </h2>
@@ -84,9 +94,16 @@ export function BeforeAfterSlider() {
             Энгийн хумсаас мэргэжлийн, гайхамшигт загвар хүртэл хэрхэн
             өөрчлөгдөж байгааг үзээрэй
           </p>
-        </div>
-        <div className="max-w-5xl mx-auto">
-          <div className="relative bg-white rounded-3xl shadow-2xl overflow-hidden">
+        </motion.div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentIndex} // энэ заавал байх ёстой
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            className="relative bg-white rounded-3xl shadow-2xl overflow-hidden"
+          >
             {/* Image Comparison Container */}
             <div
               className="relative aspect-[16/10] overflow-hidden cursor-ew-resize select-none"
@@ -194,7 +211,7 @@ export function BeforeAfterSlider() {
               {/* Dots Indicator */}
               <div className="flex justify-center space-x-3 mt-8">
                 {filteredServices?.map((_, index) => (
-                  <button
+                  <motion.button
                     key={index}
                     onClick={() => {
                       setCurrentIndex(index);
@@ -205,15 +222,23 @@ export function BeforeAfterSlider() {
                         ? "bg-rose-500 scale-125"
                         : "bg-gray-300 hover:bg-gray-400"
                     }`}
+                    whileHover={{ scale: 1.3 }}
+                    transition={{ type: "spring", stiffness: 300 }}
                   />
                 ))}
               </div>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </AnimatePresence>
 
         {/* Call to Action */}
-        <div className="text-center mt-16 p-8 bg-gradient-to-r from-rose-100 to-pink-100 rounded-3xl max-w-4xl mx-auto">
+        <motion.div
+          className="text-center mt-16 p-8 bg-gradient-to-r from-rose-100 to-pink-100 rounded-3xl max-w-4xl mx-auto"
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+        >
           <h3 className="text-2xl font-light text-gray-800 mb-4">
             Та өөрчлөлтөд бэлэн үү?
           </h3>
@@ -226,7 +251,7 @@ export function BeforeAfterSlider() {
               <Link href={`tel:${staff?.phone}`}>Цаг захиалах</Link>
             </Button>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

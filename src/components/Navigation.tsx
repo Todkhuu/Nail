@@ -1,9 +1,9 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, User, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,12 +20,16 @@ export function Navigation() {
   const navItems = [
     { href: "#home", label: "Нүүр хуудас" },
     { href: "#about", label: "Миний тухай" },
+    { href: "#before", label: "Өмнө & Дараа" },
     { href: "#gallery", label: "Ажлууд" },
     { href: "#contact", label: "Холбогдох" },
   ];
 
   return (
-    <nav
+    <motion.nav
+      initial={{ y: -80 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 1, ease: "easeOut" }}
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled ? "bg-white/90 backdrop-blur-md shadow-sm" : "bg-transparent"
       }`}
@@ -88,6 +92,6 @@ export function Navigation() {
           </div>
         )}
       </div>
-    </nav>
+    </motion.nav>
   );
 }

@@ -15,7 +15,7 @@ export function About() {
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
           >
             <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl">
               {staff?.image && (
@@ -38,7 +38,7 @@ export function About() {
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
           >
             <div>
               <h2 className="text-4xl font-light text-gray-800 mb-4">
@@ -58,7 +58,7 @@ export function About() {
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
             >
               <div className="text-center p-4 bg-rose-50 rounded-lg">
                 <div className="text-2xl font-bold text-rose-600">

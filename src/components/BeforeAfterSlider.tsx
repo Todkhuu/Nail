@@ -84,7 +84,7 @@ export function BeforeAfterSlider() {
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
         >
           <h2 className="text-4xl font-light text-gray-800 mb-4">
             Өмнө & Дараа
@@ -102,6 +102,7 @@ export function BeforeAfterSlider() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
+            viewport={{ once: false }}
             className="relative bg-white rounded-3xl shadow-2xl overflow-hidden"
           >
             {/* Image Comparison Container */}
@@ -138,10 +139,10 @@ export function BeforeAfterSlider() {
               </div>
 
               {/* Before/After Labels */}
-              <div className="absolute top-4 left-4 bg-black/70 text-white px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm">
+              <div className="absolute top-4 left-4 text-white rounded-full text-sm font-medium">
                 ӨМНӨ
               </div>
-              <div className="absolute top-4 right-4 bg-rose-500 text-white px-4 py-2 rounded-full text-sm font-medium">
+              <div className="absolute top-4 right-4 text-rose-500 rounded-full text-sm font-medium">
                 ДАРАА
               </div>
 
@@ -150,7 +151,7 @@ export function BeforeAfterSlider() {
                 variant="ghost"
                 size="sm"
                 onClick={prevSlide}
-                className="absolute z-10 left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-700 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110"
+                className="absolute z-10 left-4 top-1/2 -translate-y-1/2 bg-transparent hover:bg-white text-white rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110"
               >
                 <ChevronLeft className="h-5 w-5" />
               </Button>
@@ -158,7 +159,7 @@ export function BeforeAfterSlider() {
                 variant="ghost"
                 size="sm"
                 onClick={nextSlide}
-                className="absolute z-10 right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-700 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110"
+                className="absolute z-10 right-4 top-1/2 -translate-y-1/2 bg-transparent hover:bg-white hover:text-rose-400 text-rose-500 rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110"
               >
                 <ChevronRight className="h-5 w-5" />
               </Button>
@@ -168,12 +169,9 @@ export function BeforeAfterSlider() {
             <div className="p-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div>
-                  <div className="flex items-center gap-2 mb-3">
+                  <div className="mb-3">
                     <span className="bg-rose-100 text-rose-700 px-3 py-1 rounded-full text-sm font-medium">
                       {(currentItem?.category as CategoryType)?.name}
-                    </span>
-                    <span className="text-gray-500 text-sm">
-                      • {currentItem?.duration} мин
                     </span>
                   </div>
                   <h3 className="text-2xl font-semibold text-gray-800 mb-3">
@@ -182,6 +180,14 @@ export function BeforeAfterSlider() {
                   <p className="text-gray-600 mb-4 leading-relaxed">
                     {currentItem?.description}
                   </p>
+                  <div className="flex gap-1">
+                    <span className="text-gray-500 text-sm">
+                      {currentItem?.duration}мин
+                    </span>
+                    <span className="text-gray-500 text-sm">
+                      - {currentItem?.price}₮
+                    </span>
+                  </div>
                 </div>
 
                 <div className="space-y-4">
@@ -191,9 +197,9 @@ export function BeforeAfterSlider() {
                       {Math.round(sliderPosition)}%
                     </span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full bg-gray-200 rounded-full h-1">
                     <div
-                      className="bg-gradient-to-r from-rose-400 to-pink-500 h-2 rounded-full transition-all duration-100"
+                      className="bg-gradient-to-r from-rose-400 to-pink-500 h-1 rounded-full transition-all duration-100"
                       style={{ width: `${sliderPosition}%` }}
                     />
                   </div>
@@ -201,8 +207,8 @@ export function BeforeAfterSlider() {
                   {/* Instructions */}
                   <div className="bg-rose-50 p-4 rounded-lg">
                     <p className="text-sm text-rose-700">
-                      <strong>💡 Зөвлөмж:</strong> Зураг дээр дарж эсвэл
-                      слайдерийг чирж өмнөх ба дараах ялгааг хараарай!
+                      <strong>💡 Зөвлөмж:</strong> Зураг дээр дарж слайдерийг
+                      чирж өмнөх ба дараах ялгааг хараарай!
                     </p>
                   </div>
                 </div>
@@ -224,6 +230,7 @@ export function BeforeAfterSlider() {
                     }`}
                     whileHover={{ scale: 1.3 }}
                     transition={{ type: "spring", stiffness: 300 }}
+                    viewport={{ once: false }}
                   />
                 ))}
               </div>
@@ -237,7 +244,7 @@ export function BeforeAfterSlider() {
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
         >
           <h3 className="text-2xl font-light text-gray-800 mb-4">
             Та өөрчлөлтөд бэлэн үү?

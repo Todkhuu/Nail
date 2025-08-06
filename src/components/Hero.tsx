@@ -12,7 +12,7 @@ export function Hero() {
       initial={{ opacity: 0, y: 100 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, ease: "easeOut" }}
-      viewport={{ once: true }}
+      viewport={{ once: false }}
     >
       <section
         id="home"
@@ -26,6 +26,7 @@ export function Hero() {
           initial={{ scale: 1.5 }}
           animate={{ scale: 1 }}
           transition={{ duration: 4, ease: "easeOut" }}
+          viewport={{ once: false }}
         />
         <div className="absolute inset-0 bg-gradient-to-br from-rose-100/80 via-pink-100/70 to-purple-100/80" />
         <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -34,6 +35,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: false }}
           >
             {staff?.name}
           </motion.h1>

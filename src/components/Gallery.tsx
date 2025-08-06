@@ -43,7 +43,7 @@ export function Gallery() {
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
         >
           <h2 className="text-4xl font-light text-gray-800 mb-4">Миний Ажил</h2>
           <div className="w-20 h-1 bg-gradient-to-r from-rose-400 to-pink-400 rounded-full mx-auto mb-6" />
@@ -75,7 +75,7 @@ export function Gallery() {
                   initial={{ opacity: 0.8, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, ease: "easeOut" }}
-                  viewport={{ once: true, amount: 0.3 }}
+                  viewport={{ once: false }}
                 >
                   <Image
                     src={item?.image || "/placeholder.svg"}
@@ -132,6 +132,7 @@ export function Gallery() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.6 }}
+          viewport={{ once: false }}
         >
           <Button
             variant={activeCategory === "all" ? "default" : "outline"}
@@ -187,7 +188,7 @@ export function Gallery() {
                 initial={{ opacity: 0.8, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                viewport={{ once: true, amount: 0.3 }}
+                viewport={{ once: false }}
               >
                 <Image
                   src={item.image || "/placeholder.svg"}

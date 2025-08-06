@@ -27,7 +27,7 @@ export function Contact() {
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      viewport={{ once: true }}
+      viewport={{ once: false }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
@@ -44,7 +44,7 @@ export function Contact() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             className="text-center p-6 bg-gradient-to-br from-rose-50 to-pink-50 rounded-2xl hover:shadow-lg transition-shadow duration-300"
           >
             <div className="w-16 h-16 bg-gradient-to-br from-rose-400 to-pink-400 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -72,7 +72,7 @@ export function Contact() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             className="text-center p-6 bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl hover:shadow-lg transition-shadow duration-300"
           >
             <div className="w-16 h-16 bg-gradient-to-br from-pink-400 to-purple-400 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -94,7 +94,7 @@ export function Contact() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             className="text-center p-6 bg-gradient-to-br from-purple-50 to-rose-50 rounded-2xl hover:shadow-lg transition-shadow duration-300"
           >
             <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-rose-400 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -105,14 +105,12 @@ export function Contact() {
               {staff?.availableTimes?.map((dayObj, index) => {
                 const { day, slots } = dayObj;
 
-                // Хэрэв slots хоосон бол "Амарна" гэж харуулна
                 if (slots.length === 0) {
                   return (
                     <p key={index}>{convertDayToMongolian(day)}: Амарна</p>
                   );
                 }
 
-                // Эс бөгөөс slots-оос эхний цагаар харуулна (нэг өдөрт олон slot байх магадлалтай бол loop хийж болно)
                 return (
                   <p key={index}>
                     {convertDayToMongolian(day)}:{" "}
@@ -133,7 +131,7 @@ export function Contact() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
+            viewport={{ once: false }}
             className="text-center p-6 bg-gradient-to-br from-rose-50 to-pink-50 rounded-2xl hover:shadow-lg transition-shadow duration-300"
           >
             <div className="w-16 h-16 bg-gradient-to-br from-rose-400 to-pink-400 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -165,7 +163,7 @@ export function Contact() {
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
+          viewport={{ once: false }}
         >
           <h3 className="text-2xl font-light text-gray-800 mb-4">
             Цаг авахыг хүсэж байна уу?

@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useService } from "@/app/_context/ServiceContext";
 import { useCategory } from "@/app/_context/CategoryContext";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export function Gallery() {
   const [activeCategory, setActiveCategory] = useState("all");

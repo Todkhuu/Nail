@@ -4,10 +4,12 @@ import Link from "next/link";
 import { Menu, User, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { useStaff } from "@/app/_context/StaffContext";
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { staff } = useStaff();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,7 +39,7 @@ export function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="text-2xl font-bold text-rose-400">
-            Гэрэлмаа
+            {staff?.name}
           </Link>
 
           {/* Desktop Navigation */}
@@ -46,14 +48,18 @@ export function Navigation() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-gray-700 hover:text-rose-600 transition-colors duration-200 font-medium"
+                className="relative text-gray-700 hover:text-rose-600 font-medium transition-all duration-300 ease-in-out before:content-[''] before:absolute before:-bottom-1 before:left-0 before:w-0 before:h-0.5 before:bg-rose-500 before:transition-all before:duration-300 before:ease-in-out hover:before:w-full"
               >
                 {item.label}
               </Link>
             ))}
             <Link href="/admin">
-              <Button variant="ghost">
-                <User />
+              <Button
+                variant="ghost"
+                size="sm"
+                className="p-1 hover:bg-rose-100/20 transition-all duration-300 ease-in-out"
+              >
+                <User className="h-5 w-5 text-rose-500" />
               </Button>
             </Link>
           </div>
@@ -71,7 +77,12 @@ export function Navigation() {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden bg-white/95 backdrop-blur-md border-t border-rose-100">
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="md:hidden bg-white/95 backdrop-blur-md border-t border-rose-100"
+          >
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navItems.map((item) => (
                 <Link
@@ -89,7 +100,7 @@ export function Navigation() {
                 </Button>
               </Link>
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
     </motion.nav>

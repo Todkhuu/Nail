@@ -5,6 +5,7 @@ import { useService } from "@/app/_context/ServiceContext";
 import { useCategory } from "@/app/_context/CategoryContext";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 export function Gallery() {
   const [activeCategory, setActiveCategory] = useState("all");
@@ -22,13 +23,13 @@ export function Gallery() {
 
   const filteredItems =
     activeCategory === "all"
-      ? services
+      ? services || []
       : services?.filter(
           (item) =>
             (typeof item.category === "string"
               ? item.category
               : item.category.name) === activeCategory
-        );
+        ) || [];
 
   const featuredItems = services?.filter((item) => item.feature === true) || [];
 
@@ -178,7 +179,7 @@ export function Gallery() {
 
         {/* Gallery Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredItems?.map((item, index) => {
+          {filteredItems?.slice(0, 3).map((item, index) => {
             const isActive = activeIndex === index;
             return (
               <motion.div
@@ -226,6 +227,16 @@ export function Gallery() {
             );
           })}
         </div>
+        {filteredItems?.length > 3 && (
+          <div className="text-center mt-6">
+            <Link
+              href={`/services?category=${selectedCategory || "all"}`}
+              className="inline-block bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium px-6 py-2 rounded-full transition-all duration-300"
+            >
+              Илүү үзэх
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

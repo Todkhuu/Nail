@@ -57,7 +57,7 @@ export function Navigation() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="p-1 hover:bg-rose-100/20 transition-all duration-300 ease-in-out"
+                className="p-1 hover:bg-rose-100/10"
               >
                 <User className="h-5 w-5 text-rose-500" />
               </Button>

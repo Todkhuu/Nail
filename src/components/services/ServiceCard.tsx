@@ -5,9 +5,7 @@ import { ServiceType } from "@/app/utils/types";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
   DialogTitle,
-  DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
 
@@ -45,7 +43,12 @@ export default function ServiceCard({ item }: { item: ServiceType }) {
       </DialogTrigger>
 
       <DialogContent className="w-full p-0 rounded-3xl shadow-2xl bg-white overflow-hidden border-none mx-1">
-        <div className="w-full h-72 md:h-96 relative">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          className="w-full h-72 md:h-96 relative"
+        >
           <Image
             src={item.image || "/placeholder.svg"}
             alt={item.title}
@@ -53,14 +56,19 @@ export default function ServiceCard({ item }: { item: ServiceType }) {
             sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover"
           />
-        </div>
+        </motion.div>
 
-        <div className="px-4 md:px-4 space-y-2 text-gray-800">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.2, ease: "easeInOut" }}
+          className="px-4 md:px-4 space-y-2 text-gray-800"
+        >
           <div className="flex flex-col">
             <div className="text-[18px] text-left md:text-[20px] font-bold text-rose-500">
               {item.title}
             </div>
-            <div className="text-[14px] text-left text-gray-500 md:text-base font-semibold ">
+            <div className="text-[14px] text-left text-gray-500 md:text-base font-semibold">
               {typeof item.category === "string"
                 ? item.category
                 : item.category.name}
@@ -85,7 +93,7 @@ export default function ServiceCard({ item }: { item: ServiceType }) {
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
         <DialogTitle></DialogTitle>
       </DialogContent>
     </Dialog>

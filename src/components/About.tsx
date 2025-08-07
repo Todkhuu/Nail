@@ -28,8 +28,16 @@ export function About() {
                 />
               )}
             </div>
-            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-rose-200 to-pink-200 rounded-full opacity-60" />
-            <div className="absolute -top-6 -left-6 w-24 h-24 bg-gradient-to-br from-purple-200 to-pink-200 rounded-full opacity-40" />
+            <motion.div
+              className="absolute -bottom-6 -right-[14px] w-32 h-32 bg-gradient-to-r from-white to-pink-500 rounded-full opacity-40 overflow-hidden shadow-md"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+            />
+            <motion.div
+              className="absolute -top-6 -left-6 w-24 h-24 bg-gradient-to-r from-white to-pink-500 rounded-full opacity-40 overflow-hidden shadow-md"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+            />
           </motion.div>
 
           {/* Текст хэсэг */}

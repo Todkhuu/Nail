@@ -20,16 +20,17 @@ export function Gallery() {
   const handleToggle = (index: number) => {
     setActiveIndex((prev) => (prev === index ? null : index));
   };
-
   const filteredItems =
     activeCategory === "all"
       ? services || []
-      : services?.filter(
-          (item) =>
-            (typeof item.category === "string"
+      : services?.filter((item) => {
+          const categoryId =
+            typeof item.category === "string"
               ? item.category
-              : item.category.name) === activeCategory
-        ) || [];
+              : item.category._id;
+
+          return categoryId === activeCategory;
+        }) || [];
 
   const featuredItems = services?.filter((item) => item.feature === true) || [];
 
@@ -151,14 +152,14 @@ export function Gallery() {
               <Button
                 key={index}
                 variant={
-                  activeCategory === category.name ? "default" : "outline"
+                  activeCategory === category._id ? "default" : "outline"
                 }
                 onClick={() => {
-                  setActiveCategory(category.name);
+                  setActiveCategory(category._id!);
                   setSelectedCategory(category._id!);
                 }}
                 className={`rounded-full px-6 py-2 transition-all duration-300 mb-2 ${
-                  activeCategory === category.name
+                  activeCategory === category._id
                     ? "bg-rose-500 hover:bg-rose-600 text-white"
                     : "border-rose-200 text-rose-600 hover:bg-rose-50"
                 }`}
@@ -230,7 +231,7 @@ export function Gallery() {
         {filteredItems?.length > 3 && (
           <div className="text-center mt-6">
             <Link
-              href={`/services?category=${selectedCategory || "all"}`}
+              href={`/services?category=${activeCategory || "all"}`}
               className="inline-block bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium px-6 py-2 rounded-full transition-all duration-300"
             >
               Илүү үзэх

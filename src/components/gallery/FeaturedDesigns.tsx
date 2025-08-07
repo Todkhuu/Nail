@@ -18,12 +18,9 @@ export const FeaturedDesigns = ({ services }: Props) => {
   return (
     <div className="mb-16">
       <div className="text-center mb-8">
-        <h3 className="text-2xl font-light text-gray-700 mb-2">
+        <h3 className="text-2xl font-medium text-rose-500 mb-2">
           Онцлох Загварууд
         </h3>
-        <p className="text-gray-500">
-          Хамгийн их хандалттай, трэнд болсон хумсны хийцүүд
-        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">

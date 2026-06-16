@@ -107,27 +107,6 @@ export function Contact() {
                   <span className="font-medium">Даваа–Ням</span>
                 </p>
               </div>
-              {/* {staff?.availableTimes?.map((dayObj, index) => {
-                const { day, slots } = dayObj;
-
-                if (slots.length === 0) {
-                  return (
-                    <p key={index}>{convertDayToMongolian(day)}: Амарна</p>
-                  );
-                }
-
-                return (
-                  <p key={index}>
-                    {convertDayToMongolian(day)}:{" "}
-                    {slots.map((slot, i) => (
-                      <span key={i}>
-                        {slot.start}–{slot.end}
-                        {i !== slots.length - 1 && ", "}
-                      </span>
-                    ))}
-                  </p>
-                );
-              })} */}
             </div>
           </motion.div>
 
@@ -185,4 +164,27 @@ export function Contact() {
       </div>
     </motion.section>
   );
+}
+{
+  /* {staff?.availableTimes?.map((dayObj, index) => {
+                const { day, slots } = dayObj;
+
+                if (slots.length === 0) {
+                  return (
+                    <p key={index}>{convertDayToMongolian(day)}: Амарна</p>
+                  );
+                }
+
+                return (
+                  <p key={index}>
+                    {convertDayToMongolian(day)}:{" "}
+                    {slots.map((slot, i) => (
+                      <span key={i}>
+                        {slot.start}–{slot.end}
+                        {i !== slots.length - 1 && ", "}
+                      </span>
+                    ))}
+                  </p>
+                );
+              })} */
 }

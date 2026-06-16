@@ -8,18 +8,18 @@ import { motion } from "framer-motion";
 export function Contact() {
   const { staff } = useStaff();
 
-  function convertDayToMongolian(day: string) {
-    const days: { [key: string]: string } = {
-      Monday: "Дав",
-      Tuesday: "Мяг",
-      Wednesday: "Лха",
-      Thursday: "Пүр",
-      Friday: "Ба",
-      Saturday: "Бям",
-      Sunday: "Ням",
-    };
-    return days[day] || day;
-  }
+  // function convertDayToMongolian(day: string) {
+  //   const days: { [key: string]: string } = {
+  //     Monday: "Дав",
+  //     Tuesday: "Мяг",
+  //     Wednesday: "Лха",
+  //     Thursday: "Пүр",
+  //     Friday: "Ба",
+  //     Saturday: "Бям",
+  //     Sunday: "Ням",
+  //   };
+  //   return days[day] || day;
+  // }
   return (
     <motion.section
       id="contact"
@@ -102,7 +102,12 @@ export function Contact() {
             </div>
             <h3 className="font-semibold text-gray-800 mb-2">Цагийн хуваарь</h3>
             <div className="text-gray-600 text-sm space-y-1">
-              {staff?.availableTimes?.map((dayObj, index) => {
+              <div className="space-y-1">
+                <p>
+                  <span className="font-medium">Даваа–Ням</span>
+                </p>
+              </div>
+              {/* {staff?.availableTimes?.map((dayObj, index) => {
                 const { day, slots } = dayObj;
 
                 if (slots.length === 0) {
@@ -122,7 +127,7 @@ export function Contact() {
                     ))}
                   </p>
                 );
-              })}
+              })} */}
             </div>
           </motion.div>
 
@@ -145,9 +150,7 @@ export function Contact() {
               className="border-rose-200 text-rose-600 hover:bg-rose-50 bg-transparent"
             >
               <Link
-                href={
-                  "https://www.google.com/maps/place/De+Saron+Salon+Moriton+salbar/@47.8986269,106.8977048,20.73z/data=!4m6!3m5!1s0x5d969391396b9fd3:0xf5c52d9ca016dd3f!8m2!3d47.8985684!4d106.8977293!16s%2Fg%2F11vj8__mc4?entry=ttu&g_ep=EgoyMDI1MDcxMy4wIKXMDSoASAFQAw%3D%3D"
-                }
+                href={"https://maps.app.goo.gl/3hiEkw9nRmnwaEYM6"}
                 target="_blank"
                 rel="noopener noreferrer"
               >
